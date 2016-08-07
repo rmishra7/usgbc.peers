@@ -10,19 +10,18 @@ from .managers import ProjectManager
 from accounts.models import Profile
 
 
-BASIC = "1"
-SCREENING = "2"
-
-PROJECT_STATUS_CHOICES = [
-    (BASIC, "Basic"),
-    (SCREENING, "Screening")
-]
-
-
 class Project(models.Model):
     """
     model to store project details
     """
+    BASIC = "1"
+    SCREENING = "2"
+
+    PROJECT_STATUS_CHOICES = [
+        (BASIC, "Basic"),
+        (SCREENING, "Screening")
+    ]
+
     CITY = "1"
     CAMPUS = "2"
     SUPPLY = "3"
@@ -66,8 +65,9 @@ class Project(models.Model):
     city = models.CharField(_("City"), max_length=40)
     state = models.CharField(_("State/Province"), max_length=40)
     country = models.CharField(_("Country"), max_length=40)
-    project_type = models.CharField(_("Project Type"), max_length=1, choices=PROJECT_TYPE_CHOICES)
-    project_subtype = models.CharField(_("Project SubType"), max_length=2, choices=PROJECT_SUBTYPE_CHOICES)
+    zipcode = models.CharField(_("Zipcode"), max_length=20)
+    # project_type = models.CharField(_("Project Type"), max_length=1, choices=PROJECT_TYPE_CHOICES)
+    # project_subtype = models.CharField(_("Project SubType"), max_length=2, choices=PROJECT_SUBTYPE_CHOICES)
     org_name = models.CharField(_("Organization Name"), max_length=80)
     org_address = models.TextField(_("organisation Address"))
     poc_name = models.CharField(_("Point Of Contact Name"), max_length=80)
@@ -95,4 +95,4 @@ class Project(models.Model):
         app_label = "projects"
 
     def __unicode__(self):
-        return "%S" % (self.name)
+        return "%s" % (self.name)

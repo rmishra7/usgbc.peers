@@ -17,9 +17,11 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('rest_framework_docs.urls')),
+    url(r'^docs/', include('rest_framework_docs.urls')),
     url(r'^auth/', include('accounts.urls')),
-    url(r'^projects/', include('projects.urls'))
+    url(r'^projects/', include('projects.urls')),
+    url(r'^', include('home.urls')),
 ]
