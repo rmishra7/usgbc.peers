@@ -1,0 +1,5 @@
+Django
+djangorestframework
+drfdocs
+django-celery
+redis
