@@ -3,3 +3,5 @@ djangorestframework
 drfdocs
 django-celery
 redis
+django-braces
+mysql-python
