@@ -29,7 +29,7 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = Project
         fields = (
             'id', 'name', 'description', 'city', 'state', 'country', 'org_name', 'org_address',
-            'poc_name', 'poc_contact', 'poc_email', 'poc_designation', 'created_by',
+            'poc_name', 'poc_contact', 'poc_email', 'poc_designation', 'created_by', 'project_type',
             'updated_by', 'created_at', 'updated_at', 'project_owner', 'project_status', 'zipcode')
 
 
