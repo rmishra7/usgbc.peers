@@ -88,7 +88,7 @@ class Project(models.Model):
     state = models.CharField(_("State/Province"), max_length=40)
     country = models.CharField(_("Country"), max_length=40)
     zipcode = models.CharField(_("Zipcode"), max_length=20)
-    project_type = models.CharField(_("Project Type"), max_length=1, choices=PROJECT_TYPE_CHOICES, blank=True, null=True)
+    project_type = models.CharField(_("Project Type"), max_length=10, choices=PROJECT_TYPE_CHOICES, blank=True, null=True)
     # project_subtype = models.CharField(_("Project SubType"), max_length=2, choices=PROJECT_SUBTYPE_CHOICES)
     org_name = models.CharField(_("Organization Name"), max_length=80)
     org_address = models.TextField(_("organisation Address"))
@@ -155,40 +155,38 @@ class CreditsAchieved(models.Model):
         (CUSTOMER_CONTRIBUTION, "Customer Contribution")
     ]
 
-    DCN = "DCN"
-    PO = "PO"
-    DC = "DC"
-    PT = "PT"
-    SP = "SP"
+    DESIGN_CONSIDERATION = "DCN"
+    PERFORMANCE_OUTCOME = "PO"
+    DEMONSTRATED_CAPABILITY = "DC"
+    PERFORMANCE_TRANSPARENCY = "PT"
+    STANDARD_PROCESS = "SP"
 
     CREDIT_CRITERIA_CHOICES = [
-        (DCN, "DCN"),
-        (PO, "PO"),
-        (DC, "DC"),
-        (PT, "PT"),
-        (SP, "SP")
+        (DESIGN_CONSIDERATION, "Design Consideration"),
+        (PERFORMANCE_OUTCOME, "Performance Outcome"),
+        (DEMONSTRATED_CAPABILITY, "Demonstrated Capability"),
+        (PERFORMANCE_TRANSPARENCY, "Performance Transparency"),
+        (STANDARD_PROCESS, "Standard Process")
     ]
 
-    PR = "PR"
-    CO = "CO"
-    BO = "BO"
-    PR = "PR"
+    PREREQUISTIC = "PR"
+    CORE = "CO"
+    BONUS = "BO"
 
     CREDIT_TYPE_CHOICES = [
-        (PR, "PR"),
-        (CO, "CO"),
-        (BO, "BO"),
-        (PR, "PR")
+        (PREREQUISTIC, "Pre Requistic"),
+        (CORE, "Core"),
+        (BONUS, "Bonus")
     ]
 
     # project = models.ForeignKey(Project, related_name=_("project_credit"))
     credit_name = models.CharField(_("Credit Name"), max_length=120)
-    category = models.CharField(_("Credit Category"), max_length=1, choices=CREDIT_CATEGORY_CHOICES)
+    category = models.CharField(_("Credit Category"), max_length=5, choices=CREDIT_CATEGORY_CHOICES)
     city_credit = models.BooleanField(_("City Credit"), default=False)
     campus_credit = models.BooleanField(_("Campus Credit"), default=False)
     supply_credit = models.BooleanField(_("Supply Credit"), default=False)
-    criteria = models.CharField(_("Credit Criteria"), max_length=2, choices=CREDIT_CRITERIA_CHOICES)
-    type = models.CharField(_("Credit Type"), max_length=2, choices=CREDIT_TYPE_CHOICES)
+    criteria = models.CharField(_("Credit Criteria"), max_length=5, choices=CREDIT_CRITERIA_CHOICES)
+    type = models.CharField(_("Credit Type"), max_length=5, choices=CREDIT_TYPE_CHOICES)
     intent = models.CharField(_("Credit Intent"), max_length=200)
     delete = models.BooleanField(_("Delete"), default=False)
 
@@ -257,6 +255,19 @@ class StrategyQuestion(models.Model):
     RRC_1_6 = "RRC16"
     RRS_1_7 = "RRS17"
     RRC_1_8 = "RRC18"
+    EES_3_1 = "EES31"
+    EES_3_2 = "EES32"
+    EES_3_3 = "EES33"
+    EES_3_4 = "EES34"
+    EEC_3_5 = "EEC35"
+    EES_12_1 = "EES121"
+    EEC_12_2 = "EEC122"
+    OES_6_1 = "OES61"
+    OEC_6_2 = "OEC62"
+    CCS_1_1 = "CCS11"
+    CCS_1_2 = "CCS12"
+    CCC_1_3 = "CCC13"
+    CCC_1_4 = "CCC14"
 
     QUESTION_CODE_CHOICES = [
         (RRS_1_1, "RRS-1.1"),
@@ -266,7 +277,20 @@ class StrategyQuestion(models.Model):
         (RRC_1_5, "RRC-1.5"),
         (RRC_1_6, "RRC-1.6"),
         (RRS_1_7, "RRS-1.7"),
-        (RRC_1_8, "RRC-1.8")
+        (RRC_1_8, "RRC-1.8"),
+        (EES_3_1, "EES-3.1"),
+        (EES_3_2, "EES-3.2"),
+        (EES_3_3, "EES-3.3"),
+        (EES_3_4, "EES-3.4"),
+        (EEC_3_5, "EEC-3.5"),
+        (EES_12_1, "EES-12.1"),
+        (EEC_12_2, "EEC-12.2"),
+        (OES_6_1, "OES-6.1"),
+        (OEC_6_2, "OEC-6.2"),
+        (CCS_1_1, "CCS-1.1"),
+        (CCS_1_2, "CCS-1.2"),
+        (CCC_1_3, "CCC-1.3"),
+        (CCC_1_4, "CCC-1.4")
     ]
 
     LABEL = "label"
@@ -293,8 +317,8 @@ class StrategyQuestion(models.Model):
 
     strategy = models.ForeignKey(Strategy, related_name=_("strategy_question"))
     question = models.TextField(_("Question"))
-    code = models.CharField(_("Question Code"), max_length=2, choices=QUESTION_CODE_CHOICES)
-    qtype = models.CharField(_("Question Type"), max_length=1, choices=QUESTION_TYPE_CHOICES)
+    code = models.CharField(_("Question Code"), max_length=10, choices=QUESTION_CODE_CHOICES)
+    qtype = models.CharField(_("Question Type"), max_length=10, choices=QUESTION_TYPE_CHOICES)
 
     objects = StrategyQuestionManager()
 
@@ -335,10 +359,16 @@ class ElectricityPlant(models.Model):
     """
     Plantwise SEI for the specified country
     """
-    COAL = "Coal"
-    NUCLEAR = "Nuclear"
-    GAS = "Gas"
-    OTHER_MEAN = "Other"
+    COAL = "coal"
+    NUCLEAR = "nuclear"
+    GAS = "cas"
+    PETROLEUM = "Petroleum"
+    SIMPLE_GAS = "simple gas"
+    WIND = "wind"
+    (PETROLEUM, "Petroleum"),
+    (SIMPLE_GAS, "Simple Gas"),
+    (WIND, "Wind"),
+    OTHER_MEAN = "other mean"
 
     FUEL_TYPE_CHOICES = [
         (COAL, "Coal"),
@@ -371,11 +401,11 @@ class ElectricityPlant(models.Model):
         (PV, "PV")
     ]
 
-    plant_name = models.CharField(_("Plant Name"), max_length=50)
-    fuel_type = models.CharField(_("Fuel Type"), max_length=1, choices=FUEL_TYPE_CHOICES, blank=True, null=True)
+    plant_name = models.CharField(_("Plant Name"), max_length=50, blank=True, null=True)
+    fuel_type = models.CharField(_("Fuel Type"), max_length=20, choices=FUEL_TYPE_CHOICES, default=OTHER_MEAN)
     sei_value = models.CharField(_("SEI Value"), max_length=10, default=0)
-    utility = models.CharField(_("Plant Utility"), max_length=1, choices=PLANT_UTILITY_CHOICES)
-    type = models.CharField(_("Plant Type"), max_length=1, choices=PLANT_TYPE_CHOICES)
+    utility = models.CharField(_("Plant Utility"), max_length=10, choices=PLANT_UTILITY_CHOICES)
+    type = models.CharField(_("Plant Type"), max_length=10, choices=PLANT_TYPE_CHOICES)
     state = models.CharField(_("Plant State"), max_length=30)
     country = models.CharField(_("Plant Country"), max_length=30)
     delete = models.BooleanField(_("Delete"), default=True)
@@ -408,7 +438,7 @@ class ElectricityPlantUnit(models.Model):
         app_label = "projects"
 
     def __unicode__(self):
-        return "%s:%s" % (self.plant_name) % str(self.unit_no)
+        return "%s:%s" % (self.plant.plant_name) % str(self.unit_no)
 
 
 class ProjectPlantMapping(models.Model):
@@ -417,6 +447,7 @@ class ProjectPlantMapping(models.Model):
     """
     project = models.ForeignKey(Project, related_name=_("project_plant"))
     plant = models.ForeignKey(ElectricityPlant, related_name=_("elec_plant"))
+    plant_unit = models.ForeignKey(ElectricityPlantUnit, related_name=_("project_plant_unit"), blank=True, null=True)
     electricity_deliver = models.CharField(_("Electricity Delivered to Project"), max_length=10, default=0)
 
     objects = ProjectPlantMappingManager()

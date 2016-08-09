@@ -13,28 +13,26 @@
 <link href="/static/css/animate.css" rel="stylesheet" media="screen">
 <link href="/static/css/owl.theme.css" rel="stylesheet">
 <link href="/static/css/owl.carousel.css" rel="stylesheet">
-<link href="/static/css/style.css" rel="stylesheet">
 
 <!-- Colors -->
 <link href="/static/css/css-index.css" rel="stylesheet" media="screen">
-<!-- <link href="css/css-index-green.css" rel="stylesheet" media="screen"> -->
-<!-- <link href="css/css-index-purple.css" rel="stylesheet" media="screen"> -->
-<!-- <link href="css/css-index-red.css" rel="stylesheet" media="screen"> -->
-<!-- <link href="css/css-index-orange.css" rel="stylesheet" media="screen"> -->
-<!-- <link href="css/css-index-yellow.css" rel="stylesheet" media="screen"> -->
+<!-- <link href="/static/css/css-index-green.css" rel="stylesheet" media="screen"> -->
+<!-- <link href="/static/css/css-index-purple.css" rel="stylesheet" media="screen"> -->
+<!-- <link href="/static/css/css-index-red.css" rel="stylesheet" media="screen"> -->
+<!-- <link href="/static/css/css-index-orange.css" rel="stylesheet" media="screen"> -->
+<!-- <link href="/static/css/css-index-yellow.css" rel="stylesheet" media="screen"> -->
 
 <!-- Google Fonts -->
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic" />
-<!-- <script src="js/velocity.js"></script> -->
+<!-- <script src="/static/js/velocity.js"></script> -->
     <script src="/static/js/jquery.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/custom.js"></script>
     <script src="/static/js/jquery.sticky.js"></script>
 	<script src="/static/js/wow.min.js"></script>
 	<script src="/static/js/owl.carousel.min.js"></script>
-	<script src="/static/js/home.js"></script>
-   <!--  <script src="js/velocity.min.js"></script>
-    <script src="js/velocity.ui.min.js"></script> -->
+   <!--  <script src="/static/js/velocity.min.js"></script>
+    <script src="/static/js/velocity.ui.min.js"></script> -->
 </head>
   
 <body id="page-top" data-spy="scroll" data-target="#navbar-scroll">
@@ -66,7 +64,7 @@
 					<!-- <li><a href="#package">Pricing</a></li> -->
 					<!-- <li><a href="#testi">Reviews</a></li> -->
 					<!-- <li><a href="#contact">Contact</a></li> -->
-					<li><a role="button" href="" data-toggle="modal" data-target="#myModal">Login</a></li>
+					<li><a role="button" href="#" data-toggle="modal" data-target=".login-modal">Login</a></li>
 				</ul>
 			  </div>
 		</div>
@@ -76,7 +74,7 @@
 
 
 <!-- Modal -->
-<div id="myModal" class="modal fade login-modal" data-backdrop="true" data-easein="expandIn" role="dialog">
+<div id="myModal" class="modal fade login-modal" data-backdrop="static" data-easein="expandIn" role="dialog">
   <div class="modal-dialog modal-md">
     <!-- Modal content-->
     <div class="col-md-7">
@@ -84,13 +82,12 @@
 		  <div class="toggle"><i type="button" class="close login-window-close" data-dismiss="modal">&times;</i>
 		    <!-- <div class="tooltip">Click Me</div> -->
 		  </div>
-		  <div class="form">
+		  <div class="form login-field">
 		    <h2>Login to your account</h2>
-		    <form id="login_form">
-		      <input type="text" id="login-usrName" placeholder="Email" name="email" required/>
-		      <input type="password" id="login-pssword" placeholder="Password" name="password" required/>
-		      <p class="error-msg" id="loginerror"></p>
-		      <input type="submit" name="login" id="login_submit" class="btn btn-default" value="Login">
+		    <form>
+		      <input type="text" id="login-usrName" placeholder="Username"/>
+		      <input type="password" id="login-pssword" placeholder="Password"/>
+		      <button>Login</button>
 		    </form>
 		    <div class="row signup-message">
 		    	Don't have an account ? <a role="button" class="window-toggle" id="show-signup" href="#">Sign Up</a>
@@ -98,13 +95,12 @@
 		  </div>
 		  <div class="form signup-field" style="">
 		    <h2>Create an account</h2>
-		    <form id="register_form">
-		      <input type="text" id="first_name" placeholder="First Name" name="first_name" required/>
-		      <input type="text" id="last_name" name="last_name" placeholder="Last Name"/>
-		      <input type="email" id="email" name="email" placeholder="Email Address" required/>
-		      <input type="password" id="password" name="password" placeholder="Password" required/>
-		      <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Repeat password" required/>
-		      <input type="submit" name="register" id="register_submit" class="btn btn-default" value="Register">
+		    <form>
+		      <input type="text" id="username" placeholder="Username"/>
+		      <input type="password" id="password" placeholder="Password"/>
+		      <input type="email" id="email" placeholder="Email Address"/>
+		      <input type="tel" id="phNum" placeholder="Phone Number"/>
+		      <button>Register</button>
 		    </form>
 		    <div class="row signup-message">
 		    	Already an account ? <a role="button" class="window-toggle" id="show-signup" href="#">Login</a>
@@ -127,7 +123,7 @@
 				<div class="col-md-12">
 				
 					<!-- /.logo -->
-					<!-- <div class="logo wow fadeInDown"> <a href=""><img src="images/logo.png" alt="logo"></a></div>
+					<!-- <div class="logo wow fadeInDown"> <a href=""><img src="/static/images/logo.png" alt="logo"></a></div>
  -->
 					<!-- /.main title -->
 						<!-- <h1 class="wow fadeInLeft">
@@ -173,7 +169,7 @@
 		                  <div class="hero wow fadeInUp" data-wow-duration="2s"">        
 		                    <hgroup>
 		                        <!-- <h1>We are smart</h1> -->        
-		                        <h3>PEER outlines a comprehensive approach to reliability and resiliency that includes emergecny response plan,risk and threat identification and mitigation</h3>
+		                        <h3>PEER outlines a comprehensive approach to reliability and resiliency that includes emergency response plan,risk and threat identification and mitigation</h3>
 		                    </hgroup>       
 		                  </div>
 		                </div>
@@ -191,7 +187,7 @@
 		                  <div class="hero wow fadeInUp" data-wow-duration="2s"">        
 		                    <hgroup>
 		                        <!-- <h1>We are amazing</h1> -->        
-		                        <h3>PEER encourage the adoption of clean and efficient energy</h3>
+		                        <h3>PEER encourages the adoption of clean and efficient energy</h3>
 		                    </hgroup>
 		                  </div>
 		                </div>
@@ -255,6 +251,7 @@
 					PEER evaluates power generation, transmission, and distribution systems across desired outcomes that include efficiency, quality, reliability, resiliency and the environment.
 					</p>
 				</div>
+				
 <!-- 
 					<div class="btn-section"><a href="#feature" class="btn-default">Learn More</a></div> -->
 		

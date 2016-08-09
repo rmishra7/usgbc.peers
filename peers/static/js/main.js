@@ -37,15 +37,15 @@
 	};
 
 	// Single Page Nav
-	var clickMenu = function() {
-		$('a:not([class="external"])').click(function(){
-			var section = $(this).data('nav-section')
-		    $('html, body').animate({
-		        scrollTop: $('[data-section="' + section + '"]').offset().top
-		    }, 500);
-		    return false;
-		});
-	};
+	// var clickMenu = function() {
+	// 	$('a:not([class="external"])').click(function(){
+	// 		var section = $(this).data('nav-section')
+	// 	    $('html, body').animate({
+	// 	        scrollTop: $('[data-section="' + section + '"]').offset().top
+	// 	    }, 500);
+	// 	    return false;
+	// 	});
+	// };
 
 	// Owl Carousel
 	var carouselTestimony = function() {
@@ -654,7 +654,7 @@
 		footerFixed();
 		faqsAccordion();
 		carouselTestimony();
-		clickMenu();
+		// clickMenu();
 		HeaderToggle();
 
 		// Animations

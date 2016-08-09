@@ -116,6 +116,13 @@ $(document).ready(function(){
    /* $('.login-modal').click(function(e) {
       e.stopPropagation();
     });*/
+
+    $('.login-modal').on('hide.bs.modal', function(e) {
+      $('.clearAfterClose').val('');
+      $('.hideAfterClose').hide();
+      $('.signup-field').hide();
+      $('.login-field').show();
+    }) 
 	
 });
 	
