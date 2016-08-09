@@ -5,7 +5,7 @@ from django.db import models
 from .mixins import (
     ProjectMixin, CreditsAchievedMixin, StrategyMixin, ProjectQuestionMixin, StrategyQuestionMixin,
     CreditsValueMappingMixin, ProjectPlantMappingMixin, ElectricityPlantUnitMixin,
-    ProjectElectricityPlantMixin
+    ProjectElectricityPlantMixin, CreditsKeywordMixin
     )
 
 
@@ -16,84 +16,94 @@ class ProjectQuerySet(QuerySet, ProjectMixin):
 class ProjectManager(models.Manager, ProjectMixin):
 
     def get_queryset(self):
-        return ProjectQuerySet(self.model, using=self._db).filter(delete=False)
+        return ProjectQuerySet(self.model, using=self._db)
 
 
-class CreditsAchievedQuerySet(models.Manager, CreditsAchievedMixin):
+class CreditsAchievedQuerySet(QuerySet, CreditsAchievedMixin):
     pass
 
 
 class CreditsAchievedManager(models.Manager, CreditsAchievedMixin):
 
     def get_queryset(self):
-        return CreditsAchievedQuerySet(self.model, using=self._db).filter(delete=False)
+        return CreditsAchievedQuerySet(self.model, using=self._db)
 
 
-class CreditsValueMappingQuerySet(models.Manager, CreditsValueMappingMixin):
+class CreditsValueMappingQuerySet(QuerySet, CreditsValueMappingMixin):
     pass
 
 
 class CreditsValueMappingManager(models.Manager, CreditsValueMappingMixin):
 
     def get_queryset(self):
-        return CreditsValueMappingQuerySet(self.model, using=self._db).filter(delete=False)
+        return CreditsValueMappingQuerySet(self.model, using=self._db)
 
 
-class StrategyQuerySet(models.Manager, StrategyMixin):
+class StrategyQuerySet(QuerySet, StrategyMixin):
     pass
 
 
 class StrategyManager(models.Manager, StrategyMixin):
 
     def get_queryset(self):
-        return StrategyQuerySet(self.model, using=self._db).filter(delete=False)
+        return StrategyQuerySet(self.model, using=self._db)
 
 
-class StrategyQuestionQuerySet(models.Manager, StrategyQuestionMixin):
+class StrategyQuestionQuerySet(QuerySet, StrategyQuestionMixin):
     pass
 
 
 class StrategyQuestionManager(models.Manager, StrategyQuestionMixin):
 
     def get_queryset(self):
-        return StrategyQuestionQuerySet(self.model, using=self._db).filter(delete=False)
+        return StrategyQuestionQuerySet(self.model, using=self._db)
 
 
-class ProjectQuestionQuerySet(models.Manager, ProjectQuestionMixin):
+class ProjectQuestionQuerySet(QuerySet, ProjectQuestionMixin):
     pass
 
 
 class ProjectQuestionManager(models.Manager, ProjectQuestionMixin):
 
     def get_queryset(self):
-        return ProjectQuestionQuerySet(self.model, using=self._db).filter(delete=False)
+        return ProjectQuestionQuerySet(self.model, using=self._db)
 
 
-class ProjectElectricityPlantQuerySet(models.Manager, ProjectElectricityPlantMixin):
+class ProjectElectricityPlantQuerySet(QuerySet, ProjectElectricityPlantMixin):
     pass
 
 
 class ProjectElectricityPlantManager(models.Manager, ProjectElectricityPlantMixin):
 
     def get_queryset(self):
-        return ProjectElectricityPlantQuerySet(self.model, using=self._db).filter(delete=False)
+        return ProjectElectricityPlantQuerySet(self.model, using=self._db)
 
 
-class ElectricityPlantUnitQuerySet(models.Manager, ElectricityPlantUnitMixin):
+class ElectricityPlantUnitQuerySet(QuerySet, ElectricityPlantUnitMixin):
     pass
 
 
 class ElectricityPlantUnitManager(models.Manager, ElectricityPlantUnitMixin):
 
     def get_queryset(self):
-        return ElectricityPlantUnitQuerySet(self.model, using=self._db).filter(delete=False)
+        return ElectricityPlantUnitQuerySet(self.model, using=self._db)
 
 
-class ProjectPlantMappingQuerySet(models.Manager, ProjectPlantMappingMixin):
+class ProjectPlantMappingQuerySet(QuerySet, ProjectPlantMappingMixin):
     pass
 
 
 class ProjectPlantMappingManager(models.Manager, ProjectPlantMappingMixin):
 
     def get_queryset(self):
-        return ProjectPlantMappingQuerySet(self.model, using=self._db).filter(delete=False)
+        return ProjectPlantMappingQuerySet(self.model, using=self._db)
+
+
+class CreditsKeywordQuerySet(QuerySet, CreditsKeywordMixin):
+    pass
+
+
+class CreditsKeywordManager(models.Manager, CreditsKeywordMixin):
+
+    def get_queryset(self):
+        return CreditsKeywordQuerySet(self.model, using=self._db)

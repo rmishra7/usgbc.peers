@@ -1,8 +1,18 @@
 
+from django.shortcuts import get_object_or_404
+
 from rest_framework import serializers
 
-from .models import Project
+from .models import Project, ProjectQuestion, StrategyQuestion, CreditsAchieved, Strategy
 from accounts.serializers import ProfileMiniSerializer
+
+
+class ProjectMiniSerializer(serializers.ModelSerializer):
+    """
+    ProjectMiniSerializer
+    """
+    class Meta:
+        model = Project
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -64,3 +74,49 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
         #     'status': {'write_only': True},
         #     'owner': {'write_only': True}
         # }
+
+
+class CreditsAchievedSerializer(serializers.ModelSerializer):
+    """
+    CreditsAchievedSerializer
+    """
+    class Meta:
+        model = CreditsAchieved
+
+
+class StrategySerializer(serializers.ModelSerializer):
+    """
+    StrategySerializer
+    """
+    class Meta:
+        model = Strategy
+
+
+class StrategyQuestionSerializer(serializers.ModelSerializer):
+    """
+    StrategyQuestionSerializer
+    """
+    class Meta:
+        model = StrategyQuestion
+
+
+class ProjectQuestionSerializer(serializers.ModelSerializer):
+    """
+    ProjectQuestionSerializer
+    """
+    submitted_by = ProfileMiniSerializer(read_only=True)
+    question = StrategyQuestionSerializer(read_only=True)
+    project = ProjectMiniSerializer(read_only=True)
+
+    def validate(self, attrs):
+        view = self.context.get('view')
+        project = get_object_or_404(Project, pk=view.kwargs[view.lookup_url_kwargs])
+        question = get_object_or_404(StrategyQuestion, pk=view.kwargs[view.lookup_field])
+        attrs['project'] = project
+        attrs['question'] = question
+        attrs['submitted_by'] = view.request.user
+        return attrs
+
+    class Meta:
+        model = ProjectQuestion
+        read_only_fields = ('project', 'question', 'submitted_by')

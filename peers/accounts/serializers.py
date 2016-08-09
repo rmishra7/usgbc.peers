@@ -89,7 +89,7 @@ class LoginSerializer(serializers.Serializer, AuthMixin):
     def validate(self, data):
         """ validate login credentials """
         user = self.validate_user_credentials(data)
-        if user.account_activated is not True:
+        if user.account_activated is not True and not user.is_superuser:
             raise serializers.ValidationError(_("Account is not activated yet."))
         return data
 

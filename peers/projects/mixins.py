@@ -35,3 +35,7 @@ class ElectricityPlantUnitMixin(object):
 
 class ProjectElectricityPlantMixin(object):
     pass
+
+
+class CreditsKeywordMixin(object):
+    pass

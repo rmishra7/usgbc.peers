@@ -3,9 +3,11 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework import generics, status, response, permissions
 
-from .models import Project
+from .models import (
+    Project, ProjectQuestion, CreditsAchieved, Strategy, StrategyQuestion)
 from .serializers import (
-    ProjectSerializer, ProjectDetailSerializer
+    ProjectSerializer, ProjectDetailSerializer, ProjectQuestionSerializer,
+    CreditsAchievedSerializer, StrategySerializer, StrategyQuestionSerializer
     )
 from .tasks import project_submission_listener, project_submission_success_listener
 
@@ -64,3 +66,75 @@ class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def perform_destroy(self, instance):
         instance.delete()
+
+
+class CreditsAchievedListApi(generics.ListAPIView):
+    """
+    return list of all the credits
+    """
+    model = CreditsAchieved
+    page_size = 10
+    serializer_class = CreditsAchievedSerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+    queryset = model.objects.all()
+    lookup_url_kwargs = "project_pk"
+
+    def get_queryset(self):
+        project = Project.objects.get(pk=self.kwargs[self.lookup_url_kwargs])
+        kwargs = {}
+        if project.project_type == Project.CITY:
+            kwargs['city_credit'] = True
+        elif project.project_type == Project.CAMPUS:
+            kwargs['campus_credit'] = True
+        else:
+            kwargs['supply_credit'] = True
+        return self.queryset.filter(**kwargs)
+
+
+class StrategyApi(generics.ListAPIView):
+    """
+    return strategy based on credits
+    """
+    model = Strategy
+    page_size = 10
+    serializer_class = StrategySerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+    queryset = model.objects.all()
+    lookup_url_kwargs = "credit_pk"
+
+    def get_queryset(self):
+        credit = get_object_or_404(CreditsAchieved, pk=self.kwargs[self.lookup_url_kwargs])
+        return self.queryset.filter(credit=credit)
+
+
+class StrategyQuestionApi(generics.ListAPIView):
+    """
+    return questions based on strategy
+    """
+    model = StrategyQuestion
+    page_size = 10
+    serializer_class = StrategyQuestionSerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+    queryset = model.objects.all()
+    lookup_url_kwargs = "strategy_pk"
+
+    def get_queryset(self):
+        strategy = get_object_or_404(Strategy, pk=self.kwargs[self.lookup_url_kwargs])
+        return self.queryset.filter(strategy=strategy)
+
+
+class ProjectQuestionApi(generics.ListCreateAPIView):
+    """
+    api to save answered data on a strategy's question by user
+    """
+    model = ProjectQuestion
+    page_size = 10
+    serializer_class = ProjectQuestionSerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+    queryset = model.objects.all()
+    lookup_url_kwargs = "project_pk"
+    lookup_field = "question_pk"
+
+    def get_queryset(self):
+        project = Project.objects.get(pk=self.kwargs[self.lookup_url_kwargs])
+        return self.queryset.filter(project=project)

@@ -9,7 +9,7 @@ import uuid
 from .managers import (
     ProjectManager, CreditsAchievedManager, CreditsValueMappingManager, StrategyManager,
     StrategyQuestionManager, ProjectQuestionManager, ProjectElectricityPlantManager,
-    ElectricityPlantUnitManager, ProjectPlantMappingManager
+    ElectricityPlantUnitManager, ProjectPlantMappingManager, CreditsKeywordManager
     )
 from accounts.models import Profile
 
@@ -198,7 +198,7 @@ class CreditsAchieved(models.Model):
         app_label = "projects"
 
     def __unicode__(self):
-        return "%s:%s" % (self.project.name) % (self.credit_name)
+        return "%s" % (self.credit_name)
 
 
 class CreditsValueMapping(models.Model):
@@ -240,7 +240,7 @@ class Strategy(models.Model):
         app_label = "projects"
 
     def __unicode__(self):
-        return "%s:%s" % (self.name)
+        return "%s" % (self.name)
 
 
 class StrategyQuestion(models.Model):
@@ -315,6 +315,16 @@ class StrategyQuestion(models.Model):
         (FILE, 'File Upload')
     ]
 
+    ITR_FRQ1 = "1"
+    ITR_FRQ2 = "2"
+    ITR_FRQ3 = "3"
+
+    INTERRUPTION_FREQUENCY_RANGE = [
+        (ITR_FRQ1, "O to < 15 mins"),
+        (ITR_FRQ2, ">15 mins to 60 mins"),
+        (ITR_FRQ3, "More than 60 mins")
+    ]
+
     strategy = models.ForeignKey(Strategy, related_name=_("strategy_question"))
     question = models.TextField(_("Question"))
     code = models.CharField(_("Question Code"), max_length=10, choices=QUESTION_CODE_CHOICES)
@@ -342,6 +352,7 @@ class ProjectQuestion(models.Model):
     project = models.ForeignKey(Project, related_name=_("project_question"))
     question = models.ForeignKey(StrategyQuestion, related_name=_("question_object"))
     output = models.CharField(_("Question output for project"), max_length=50)
+    submitted_by = models.ForeignKey(Profile, related_name=_("question_answered_user"))
     file = models.FileField(_("Question File for Project"), upload_to=question_file_upload, blank=True, null=True)
 
     objects = ProjectQuestionManager()
@@ -459,3 +470,22 @@ class ProjectPlantMapping(models.Model):
 
     def __unicode__(self):
         return "%s" % (self.project.name)
+
+
+class CreditsKeyword(models.Model):
+    """
+    model to map credits with keyword
+    """
+    credit = models.ForeignKey(CreditsAchieved, related_name=_("credit_keyword"))
+    keyword = models.CharField(_("keyword"), max_length=100)
+    description = models.TextField(_("Keyword Description"), blank=True, null=True)
+
+    objects = CreditsKeywordManager()
+
+    class Meta:
+        verbose_name = _("CreditsKeyword")
+        verbose_name_plural = _("CreditsKeywords")
+        app_label = "projects"
+
+    def __unicode__(self):
+        return "%s" % (self.keyword)
