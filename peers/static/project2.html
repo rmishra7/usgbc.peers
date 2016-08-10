@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="peer-app">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>PEER Strategies</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="css/jquery-ui.css" rel="stylesheet">
+    <link href="css/jquery.fullPage.css" rel="stylesheet">
+    <link href="css/jquery.qtip.min.css" rel="stylesheet">
+
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+    
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Page Content -->
+    <div class="container" style="width:100%;height:100%;">
+
+        <div class="row">
+            <div class="col-md-2 side_left_nav">
+                <div class="projects_nav">
+                    <span>Projects</span>
+                </div>
+                <div class="help_nav">
+                    <span>Help</span>
+                </div>
+                <div class="explore_nav">
+                    <span>Explore</span>
+                </div>
+            </div>
+          
+            <div class="col-md-10 side_right_nav">
+                <div class="row header">
+                    <div class="row" id="peer_title">
+                        PERFORMANCE EXCELLENCE IN ELECTRICITY RENEWAL 
+                    </div>
+                      
+                    <div class="row" id="peer_project_title">
+                        Test Project 2
+                    </div>
+                      
+                    <div class="row" id="peer_project_add">
+                        Gurgaon, Haryana, India
+                    </div>
+
+                </div>
+                
+                <div class="row" id="main_container">                    
+                    <div class="row strategy_container accordion">
+
+                        <div class="header_strategies" style="left: 365.708px;">
+                            <div class="header_strategies_title">Strategies</div>
+                            
+                            <div id="elements_leed_points">
+                                <span id="elements_scoring_text">PEER points</span> 
+                                <span id="leed_score_progressbar" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                    <div class="ui-progressbar-value ui-widget-header ui-corner-left" 
+                                    style="display: none; width: 0%;">
+                                    </div>
+                                </span> 
+                                <span id="project_total_points"><b>0</b>/2</span>
+                            </div>
+                            
+                            <div class="btn-group" id="intent-filter">
+                                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <span class="filter-selected-text">All</span>
+                                    <i class="fa fa-angle-down"></i>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="all-selected selected-filter">
+                                        <div>All</div>
+                                    </li>
+                                    <li class="my-strategies-selected">
+                                        <div>My strategies</div>
+                                    </li>
+                                    <li class="yes-selected">
+                                        <div>Yes</div>
+                                    </li>
+                                    <li class="no-selected">
+                                        <div>No</div>
+                                    </li>
+                                    <li class="star-selected">
+                                        <div>Star</div>
+                                    </li>
+                                    <li class="documented-selected">
+                                        <div>Documented</div>
+                                    </li>
+                                </ul>
+                            </div> 
+                            <div id="add_custom_strategy">
+                                Add strategies 
+                                <i class="fa fa-plus"></i>
+                            </div>      
+
+                        </div>
+                        
+                        <div id="strategy_content">
+
+                            <dt-category></dt-category>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <script src="lib/angular/angular.1.5.5.min.js"></script>
+    <script src="lib/angular/angular-route.min.js"></script>
+    <script src="lib/angular/angular-animate.min.js"></script>
+    <script src="js/app.js"></script>
+
+
+    <!-- PEER Core JavaScript -->
+    <script src="lib/plugins/jquery-ui.js"></script>
+    <script src="lib/plugins/jquery.blockUI.js"></script>
+    <script src="lib/plugins/jquery.qtip.min.js"></script>    
+    <script src="lib/plugins/materialize.js"></script>
+
+    <script src="js/peer.js"></script>
+    <script src="js/section-dt.js"></script>
+    
+</body>
+
+</html>

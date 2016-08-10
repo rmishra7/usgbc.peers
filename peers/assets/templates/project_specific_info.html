@@ -1,0 +1,357 @@
+    <!DOCTYPE html>
+    <html lang="en" ng-app="peer-app">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Dashboard</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link href="/static/css/bootstrap.css" rel="stylesheet">
+        <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+        <!-- Custom CSS -->
+        <link href="/static/css/style2.css" rel="stylesheet">
+        <!-- Google Fonts -->
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,500,700' rel='stylesheet' type='text/css'>
+
+        <script src="/static/js/jquery.js"></script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="/static/js/bootstrap.min.js"></script>
+        <script src="/static/js/dashboard.js"></script>
+
+    </head>
+
+    <body style="background-color:#e7e7e7">
+
+        <!-- Page Content -->
+
+        <!--Header-->
+        <nav class="navbar navbar-default" style="background-color:#fff;">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header" >
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#"><img src="/static/images/PEER.png" class="logo"></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Home</a></li>
+                <!-- <li><a href="#">About Us</a></li> -->
+                <li><a href="logout-view">Logout </a></li>
+            
+           </ul>
+          
+            </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+       <!--dashboard-->
+        <div class="container">
+        <div class="row">
+           
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 column_change mainCol">
+                    <form id="project_specific_form" onsubmit="submit_project_specific({{project_id}})">
+                        <div class="page-title">
+                            <h3>PEER <span>Project Specification</span></h3>
+                            <p>Please ensure that the information submitted is accurate. For more information about project registration and pricing information - please visit the Certification section at <a href="http://peer.gbci.org/certification">peer.gbci.org/certification</a>.</p>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Project Customer Details</div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="project_name_label">Number of residential customers</label>
+                                            <input  class="form-control" type="text" id="residential_cust_no" name="res_customer" tabindex="6">
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                          <label for="project_desc">Number of small commercial & industrial customers</label>
+                                          <input  class="form-control" type="text" id="comercial_cust_no" name="comm_industrial1" tabindex="7">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Number of large commercial & industrial customers</label>
+                                            <input class="form-control" type="text" id="commercial-industrial-cust-number" name="comm_industrial2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Units and Benchmarks</div>
+                            <div class="panel-body">
+
+                                <div class="row">
+                                    <label class="control-label" style="margin-left:8px;">Choose Default Units suitable to your project:</label>
+                                    <div class="contanier">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <label for="name_label">Electricity</label>
+                                                <select class="form-control" id="electric_unit">
+                                                    <option value=""></option>
+                                                    <option value="MWh">Mega Watt-hours(MWh)</option>
+                                                    <option value="MUs">Million Units(MUs)</option>
+                                                    <option value="kWh">Kilo Watt-hours(kWh)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Primary or Source Energy</label>
+                                                <select class="form-control">
+                                                  <option value=""></option>  
+                                                  <option value="BTU">British Thermal Units</option>
+                                                  <option value="CALORIES">Calories</option>
+                                                  <option value="JOULES">Joules</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Currency</label>
+                                            <select class="form-control">
+                                              <option value=""></option>  
+                                              <option value="AUTO">Auto-update based</option>
+                                              <option value="COUNTRY">Country selection</option>
+                                            </select>
+                                        </div>  
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Choose a local to use a benchmark</label>
+                                            <select class="form-control" id="benchmark">
+                                              <option value=""></option>  
+                                              <option value="RB">Reliability Benchmark</option>
+                                              <option value="EB">Environmental Benchmark</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Project Electricity Demand & Loss</div>
+                            <div class="panel-body">
+
+                                <div class="row">
+                                    <div class="contanier">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <label for="name_label">Annual customer load</label>
+                                                <div class="input-group">
+                                                  <input type="text" class="form-control" id="annual_cust_load" name="annual_customer_load" aria-describedby="annual-load">
+                                                  <span class="input-group-addon" id="annual-load"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label">Customer annual hourly peak demand</label>
+                                                <div class="input-group">
+                                                  <input type="text" class="form-control" id="annual_hourly_peak_demand" name="customer_hr_peak_demand" aria-describedby="annual-hourly">
+                                                  <span class="input-group-addon" id="annual-hourly">MW</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                       <div class="form-group">
+                                           <label class="control-label">Annual purchased electricity</label>
+                                           <div class="input-group">
+                                             <input type="text" class="form-control" id="annual_purchased_electricity" name="annual_purchased_elec" aria-describedby="annual-purchased">
+                                             <span class="input-group-addon" id="annual-purchased"></span>
+                                           </div>
+                                       </div> 
+                                    </div>
+                                    <div class="col-sm-12 col-md-6">
+                                       <div class="form-group">
+                                           <label class="control-label">Purchased annual hourly peak demand</label>
+                                           <div class="input-group">
+                                             <input type="text" class="form-control" id="purchased_annual_hourly_peak" name="purchased_hr_peak_demand" aria-describedby="basic-addon1">
+                                             <span class="input-group-addon" id="basic-addon1">MW </span>
+                                           </div>
+                                       </div> 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                       <div class="form-group">
+                                           <label class="control-label">T&D Losses up to project loads </label>
+                                           <div class="input-group">
+                                             <input type="text" class="form-control" id="t&d_loads" name="tnd_losses" aria-describedby="basic-addon1">
+                                             <span class="input-group-addon" id="basic-addon1">%</span>
+                                           </div>
+                                       </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Local Project Operated Generation</div>
+                            <div class="panel-body">
+                              <div class="panel-body">
+                                <div class="row">
+                                  <div class="col-md-4"></div>
+                                  <div class="col-md-4" style="text-align:center">
+                                    <label class="control-label">Capacity (MW)</label></div>
+                                  <div class="col-md-4" style="text-align:center">
+                                    <label class="control-label">Annual Generation(MWh)</label>
+                                  </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                      <label class="control-label">Total Local Electricity Generation</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="local_gen_capacity" name="tot_local_generation_capacity">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="local_gen_annual" name="tot_local_elec_generation">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                      <label class="control-label">Turbine as Boiler</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="turbine_capacity" name="turbine_elec_capacity">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="turbine_annual" name="turbine_elec">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="control-label">CHP / Cogeneration Gas</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="CHP_capacity" name="chp_elec_capacity">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="CHP_annual" name="chp_elec">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                      <label class="control-label">High Efficiency Gas</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="High_efficiencyGas_capacity" name="high_efficiency_gas_elec">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="High_efficiencyGas_annual" name="high_efficiency_gas_elec_capacity">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="control-label">Other Natural Gas</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="renewable_capacity" name="local_other_gas_elec">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="renewable_annual" name="local_other_gas_elec_capacity">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="control-label">Wind and Solar PV</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="renewable_capacity" name="wind_solar_pv_elec">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="renewable_annual" name="wind_solar_pv_elec_capacity">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="control-label">Biomass</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="renewable_capacity" name="biomass_elec">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="renewable_annual" name="biomass_elec_capacity">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="control-label">GeoThermal</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="renewable_capacity" name="geothermal_elec_capacity">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="renewable_annual" name="geothermal_elec">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="control-label">Any Other Renewables</label>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="renewable_capacity" name="other_local_elec_capacity">
+                                    </div>
+                                    <div class="col-md-4">
+                                      <input type="text" class="form-control" id="renewable_annual" name="other_local_elec">
+                                    </div>
+                                </div>
+
+                            </div>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn btn-success" style="margin-bottom:3%;margin-top:3%" id="project-specific-submit" value="Submit"/>
+                    </form>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 column_change sideCol">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h4><i class="fa fa-info-circle mr5"></i>PEER Rating System</h4>
+                        </div>
+                        <div class="panel-body">
+                            <p class="description">The PEER system serves as a tool to accelerate transformation of the electricity sector. By engaging in the PEER process, power grids have an opportunity to gain competitive advantage by differentiating their performance, documenting the value produced, and demonstrating meaningful outcomes.</p>
+                            <p class="description">PEER is a certification program that measures and improves power system performance and electricity delivery systems. PEER can help power systems gain advantage by differentiating their performance, documenting the value produced, and demonstrating meaningful outcomes.</p>
+                            <p class="description">PEER evaluates power generation, transmission, and distribution systems across desired outcomes that include efficiency, quality, reliability, resiliency and the environment.</p>
+                            <p class="description">PEER has three different applications that involve professionals across the industry:</p>
+                            <ul class="description">
+                                <li>The development of better standards through partnerships tools and guides to benchmark and continuously improve power grid design, construction and operation</li>
+                                <li>Power supply and microgrid performance design, rating, and certification</li>
+                                <li>Stakeholder and professional education</li>
+                            </ul>
+                            <a href="#" class="btn btn-primary btn-lg col-sm-12"><i class="fa fa-external-link mr5"></i>Know More</a>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </body>
+</html>
