@@ -38,7 +38,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = (
-            'id', 'name', 'description', 'city', 'state', 'country', 'org_name', 'org_address',
+            'id', 'name', 'description', 'city', 'state', 'country', 'org_name',
             'poc_name', 'poc_contact', 'poc_email', 'poc_designation', 'created_by', 'project_type',
             'updated_by', 'created_at', 'updated_at', 'project_owner', 'project_status', 'zipcode')
 
@@ -67,9 +67,17 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = (
-            'id', 'name', 'description', 'city', 'state', 'country', 'org_name', 'org_address', 'project_type',
+            'id', 'name', 'description', 'city', 'state', 'country', 'org_name', 'project_type',
             'poc_name', 'poc_contact', 'poc_email', 'poc_designation', 'created_by',
-            'updated_by', 'created_at', 'updated_at', 'project_owner', 'zipcode')
+            'updated_by', 'created_at', 'updated_at', 'project_owner', 'zipcode', 'project_status',
+            'res_customer', 'comm_industrial1', 'comm_industrial2', 'annual_customer_load',
+            'customer_hr_peak_demand', 'annual_purchased_elec', 'purchased_hr_peak_demand',
+            'tnd_losses', 'tot_local_elec_generation', 'turbine_elec', 'chp_elec', 'high_efficiency_gas_elec',
+            'local_other_gas_elec', 'wind_solar_pv_elec', 'biomass_elec', 'geothermal_elec',
+            'other_local_elec', 'tot_local_generation_capacity', 'turbine_elec_capacity',
+            'chp_elec_capacity', 'high_efficiency_gas_elec_capacity', 'local_other_gas_elec_capacity',
+            'wind_solar_pv_elec_capacity', 'biomass_elec_capacity', 'geothermal_elec_capacity',
+            'other_local_elec_capacity')
         # extra_kwargs = {
         #     'status': {'write_only': True},
         #     'owner': {'write_only': True}

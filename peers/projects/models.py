@@ -26,9 +26,9 @@ class Project(models.Model):
         (SCREENING, "Screening")
     ]
 
-    CITY = "1"
-    CAMPUS = "2"
-    SUPPLY = "3"
+    CITY = "city"
+    CAMPUS = "campus"
+    SUPPLY = "supply"
 
     PROJECT_TYPE_CHOICES = [
         (CITY, "City"),
@@ -91,7 +91,7 @@ class Project(models.Model):
     project_type = models.CharField(_("Project Type"), max_length=10, choices=PROJECT_TYPE_CHOICES, blank=True, null=True)
     # project_subtype = models.CharField(_("Project SubType"), max_length=2, choices=PROJECT_SUBTYPE_CHOICES)
     org_name = models.CharField(_("Organization Name"), max_length=80)
-    org_address = models.TextField(_("organisation Address"))
+    # org_address = models.TextField(_("organisation Address"))
     poc_name = models.CharField(_("Point Of Contact Name"), max_length=80)
     poc_contact = models.CharField(_("Contact Number"), max_length=15, validators=[
         RegexValidator(r'^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$'),
@@ -109,6 +109,7 @@ class Project(models.Model):
     purchased_hr_peak_demand = models.CharField(_("Purchased annual hourly peak demand"), max_length=10, blank=True, null=True)
     purchased_hr_unit = models.CharField(_("Purchased Peak Demand Unit"), max_length=10, default=MEGA_WATTS)
     tnd_losses = models.CharField(_("T&D Losses"), max_length=10, blank=True, null=True)
+
     tot_local_elec_generation = models.CharField(_("Total Local Electricity Generation"), max_length=10, blank=True, null=True)
     turbine_elec = models.CharField(_("Local Turbine Electricity Generation"), max_length=10, blank=True, null=True)
     chp_elec = models.CharField(_("Local CHP natual gas Electricity Generation"), max_length=10, blank=True, null=True)
@@ -118,6 +119,17 @@ class Project(models.Model):
     biomass_elec = models.CharField(_("Biomass Electricity Generation"), max_length=10, blank=True, null=True)
     geothermal_elec = models.CharField(_("Geothermal Electricity Generation"), max_length=10, blank=True, null=True)
     other_local_elec = models.CharField(_("Other Renewable Electricity Generation"), max_length=10, blank=True, null=True)
+
+    tot_local_generation_capacity = models.CharField(_("Total Local Electricity Generation Capacity"), max_length=10, blank=True, null=True)
+    turbine_elec_capacity = models.CharField(_("Local Turbine Electricity Generation Capacity"), max_length=10, blank=True, null=True)
+    chp_elec_capacity = models.CharField(_("Local CHP natual gas Electricity Generation Capacity"), max_length=10, blank=True, null=True)
+    high_efficiency_gas_elec_capacity = models.CharField(_("Local High Efficiency Electricity generation Capacity"), max_length=10, blank=True, null=True)
+    local_other_gas_elec_capacity = models.CharField(_("Local other Gas Electricity Generation Capacity"), max_length=10, blank=True, null=True)
+    wind_solar_pv_elec_capacity = models.CharField(_("Wind Solar PV Electricity Generation Capacity"), max_length=10, blank=True, null=True)
+    biomass_elec_capacity = models.CharField(_("Biomass Electricity Generation Capacity"), max_length=10, blank=True, null=True)
+    geothermal_elec_capacity = models.CharField(_("Geothermal Electricity Generation Capacity"), max_length=10, blank=True, null=True)
+    other_local_elec_capacity = models.CharField(_("Other Renewable Electricity Generation Capacity"), max_length=10, blank=True, null=True)
+
     status = models.CharField(_("Project Status"), max_length=1, choices=PROJECT_STATUS_CHOICES)
     uuid = models.UUIDField(_("Project Unique ID"), default=uuid.uuid4, editable=False)
     owner = models.ForeignKey(Profile, related_name=_("project_owner"))

@@ -31,6 +31,7 @@
     <script src="/static/js/jquery.sticky.js"></script>
 	<script src="/static/js/wow.min.js"></script>
 	<script src="/static/js/owl.carousel.min.js"></script>
+	<script src="/static/js/home.js"></script>
    <!--  <script src="/static/js/velocity.min.js"></script>
     <script src="/static/js/velocity.ui.min.js"></script> -->
 </head>
@@ -84,10 +85,10 @@
 		  </div>
 		  <div class="form login-field">
 		    <h2>Login to your account</h2>
-		    <form>
-		      <input type="text" id="login-usrName" placeholder="Username"/>
-		      <input type="password" id="login-pssword" placeholder="Password"/>
-		      <button>Login</button>
+		    <form id="login_form">
+		      <input type="text" id="login-username" name="email" placeholder="Username" required/>
+		      <input type="password" id="login-password" name="password" placeholder="Password" required/>
+		      <input type="submit" name="login" id="login_submit" class="btn btn-default" value="Login">
 		    </form>
 		    <div class="row signup-message">
 		    	Don't have an account ? <a role="button" class="window-toggle" id="show-signup" href="#">Sign Up</a>
@@ -95,12 +96,14 @@
 		  </div>
 		  <div class="form signup-field" style="">
 		    <h2>Create an account</h2>
-		    <form>
-		      <input type="text" id="username" placeholder="Username"/>
-		      <input type="password" id="password" placeholder="Password"/>
-		      <input type="email" id="email" placeholder="Email Address"/>
-		      <input type="tel" id="phNum" placeholder="Phone Number"/>
-		      <button>Register</button>
+		    <form id="register_form">
+		    	<input type="text" id="first_name" name="first_name" placeholder="First Name" required/>
+		    	<input type="text" id="last_name" name="last_name" placeholder="Last name" required/>
+				<input type="text" id="email" name="email" placeholder="Email Address" required/>
+				<input type="password" id="password" name="password" placeholder="Password" required/>
+				<input type="password" id="password_confirmation" name="password_confirmation" placeholder="Password Repeat" required/>
+				<p class="error-msg" id="registererror"></p>
+				<input type="submit" name="register" id="register_submit" class="btn btn-default" value="Register">
 		    </form>
 		    <div class="row signup-message">
 		    	Already an account ? <a role="button" class="window-toggle" id="show-signup" href="#">Login</a>
@@ -123,7 +126,7 @@
 				<div class="col-md-12">
 				
 					<!-- /.logo -->
-					<!-- <div class="logo wow fadeInDown"> <a href=""><img src="/static/images/logo.png" alt="logo"></a></div>
+					<!-- <div class="logo wow fadeInDown"> <a href=""><img src="images/logo.png" alt="logo"></a></div>
  -->
 					<!-- /.main title -->
 						<!-- <h1 class="wow fadeInLeft">
@@ -151,6 +154,7 @@
 		                <li data-target="#bs-carousel" data-slide-to="1"></li>
 		                <li data-target="#bs-carousel" data-slide-to="2"></li>
 		                <li data-target="#bs-carousel" data-slide-to="3"></li>
+		                <li data-target="#bs-carousel" data-slide-to="4"></li>
 		              </ol>
 		              
 		              <!-- Wrapper for slides -->
@@ -188,6 +192,15 @@
 		                    <hgroup>
 		                        <!-- <h1>We are amazing</h1> -->        
 		                        <h3>PEER encourages the adoption of clean and efficient energy</h3>
+		                    </hgroup>
+		                  </div>
+		                </div>
+		                <div class="item slides">
+		                  <div class="slide-5" style="background-image:url('/static/images/Customer-Engagement.png')"></div>
+		                  <div class="hero wow fadeInUp" data-wow-duration="2s"">        
+		                    <hgroup>
+		                        <!-- <h1>We are amazing</h1> -->        
+		                        <h3>PEER address customer grid service capabilities, meter data 	  	  access, tools, choice, incentives and dynamic pricing</h3>
 		                    </hgroup>
 		                  </div>
 		                </div>
@@ -276,7 +289,7 @@
 			
 			
 				<div class="feature-img">
-					<img src="images/feature-image.jpg" alt="image" class="img-responsive wow fadeInLeft">
+					<img src="/static/images/feature-image.jpg" alt="image" class="img-responsive wow fadeInLeft">
 				</div>
 			</div>
 		
@@ -340,7 +353,7 @@
 			  
 			
 			<div class="col-md-6 feature-2-pic wow fadeInRight">
-				<img src="images/feature2-image.jpg" alt="macbook" class="img-responsive">
+				<img src="/static/images/feature2-image.jpg" alt="macbook" class="img-responsive">
 			</div>				  
 		</div>			  
   
@@ -529,10 +542,10 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12 text-center">
-					<img alt="client" src="images/company.jpg" class="wow fadeInUp">
-					<img alt="client" src="images/company.jpg" class="wow fadeInUp" data-wow-delay="0.2s">
-					<img alt="client" src="images/company.jpg" class="wow fadeInUp" data-wow-delay="0.4s">
-					<img alt="client" src="images/company.jpg" class="wow fadeInUp" data-wow-delay="0.6s">
+					<img alt="client" src="/static/images/company.jpg" class="wow fadeInUp">
+					<img alt="client" src="/static/images/company.jpg" class="wow fadeInUp" data-wow-delay="0.2s">
+					<img alt="client" src="/static/images/company.jpg" class="wow fadeInUp" data-wow-delay="0.4s">
+					<img alt="client" src="/static/images/company.jpg" class="wow fadeInUp" data-wow-delay="0.6s">
 				</div>
 			</div>
 		</div>	
@@ -554,7 +567,7 @@
 						<div class="client-pic text-center">
 						
 							
-							<img src="images/client.jpg" alt="client">
+							<img src="/static/images/client.jpg" alt="client">
 						</div>
 						<div class="box">
 						
@@ -573,7 +586,7 @@
 						<div class="client-pic text-center">
 
 							
-							<img src="images/client.jpg" alt="client">
+							<img src="/static/images/client.jpg" alt="client">
 						</div>
 						<div class="box">
 
@@ -592,7 +605,7 @@
 						<div class="client-pic text-center">
 
 							
-							<img src="images/client.jpg" alt="client">
+							<img src="/static/images/client.jpg" alt="client">
 						</div>
 						<div class="box">
 
@@ -619,7 +632,7 @@
             	<h2><span class="highlight">Get in touch</span></h2>
             <div class="title-line wow fadeInRight"></div>
         </div>
-	<div class="contact fullscreen parallax" style="background-image:url('images/contacts.jpg');background-size: 1226px 1635.48px;" data-img-width="1000" data-img-height="1334" data-diff="100">
+	<div class="contact fullscreen parallax" style="background-image:url('/static/images/contacts.jpg');background-size: 1226px 1635.48px;" data-img-width="1000" data-img-height="1334" data-diff="100">
 		<div class="overlay">
 				<div class="row contact-row">
 					

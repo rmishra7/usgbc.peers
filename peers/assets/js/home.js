@@ -24,7 +24,7 @@ $(document).ready(function(){
 				xhr.setRequestHeader("X-CSRFToken", csrftoken);
 			},
 			success: function(response) {
-				window.location.href="/dashboard/";
+				window.location.href="/project/submit-project/";
 			},
 			error: function(error) {
 				$("#loginerror").html(error.responseJSON.non_field_errors);
@@ -46,6 +46,7 @@ $(document).ready(function(){
 				$(".form").html("<p>An email with activation link have been sent to the email address.</p>")
 			},
 			error: function(error) {
+				console.log(error);
 				$("#registererror").html(error.responseText);
 			}
 		});

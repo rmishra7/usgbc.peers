@@ -1224,7 +1224,8 @@ and (orientation : landscape) {
 .fade-carousel .slides .slide-1, 
 .fade-carousel .slides .slide-2,
 .fade-carousel .slides .slide-3, 
-.fade-carousel .slides .slide-4 {
+.fade-carousel .slides .slide-4,
+.fade-carousel .slides .slide-5 {
   height: 100%;
   background-size: cover;
   background-position: center center;
@@ -1269,4 +1270,9 @@ div.signup-message{
 }
 #menu-sticky-wrapper{
 	height: 60px;
+}
+.error-msg {
+  color: #db1919;
+  line-height: 34px;
+  font-size: 14px;
 }

@@ -46,6 +46,7 @@ $(document).ready(function(){
 				$(".form").html("<p>An email with activation link have been sent to the email address.</p>")
 			},
 			error: function(error) {
+				console.log(error);
 				$("#registererror").html(error.responseText);
 			}
 		});
