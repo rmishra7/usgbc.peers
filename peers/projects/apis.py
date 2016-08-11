@@ -9,7 +9,7 @@ from .serializers import (
     ProjectSerializer, ProjectDetailSerializer, ProjectQuestionSerializer,
     CreditsAchievedSerializer, StrategySerializer, StrategyQuestionSerializer
     )
-from .tasks import project_submission_listener, project_submission_success_listener
+# from .tasks import project_submission_listener, project_submission_success_listener
 
 
 class ProjectApi(generics.ListCreateAPIView):
@@ -27,8 +27,8 @@ class ProjectApi(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
-        project_submission_listener.delay(self.request.user.id)
-        project_submission_success_listener.delay(self.request.user.id)
+        # project_submission_listener.delay(self.request.user.id)
+        # project_submission_success_listener.delay(self.request.user.id)
 
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):

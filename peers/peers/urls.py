@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.generic import base
 
 
 urlpatterns = [
@@ -23,5 +24,5 @@ urlpatterns = [
     url(r'^docs/', include('rest_framework_docs.urls')),
     url(r'^auth/', include('accounts.urls')),
     url(r'^projects/', include('projects.urls')),
-    url(r'^', include('home.urls')),
+    url(r'^', base.RedirectView.as_view(url="/docs/")),
 ]

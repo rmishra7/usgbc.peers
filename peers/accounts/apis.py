@@ -3,8 +3,13 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import auth
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.contrib.sites.models import Site
+from django.template.loader import get_template
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 import uuid
+import smtplib
 
 from rest_framework import generics, response, status, permissions, exceptions, filters
 
@@ -12,7 +17,7 @@ from .permissions import IsNotAuthenticated
 from .models import Profile
 from .serializers import (
     RegisterSerializer, LoginSerializer, LogOutSerializer, ProfileMiniSerializer)
-from .tasks import user_activation_listener
+# from .tasks import user_activation_listener
 
 
 class Register(generics.CreateAPIView):
@@ -34,8 +39,36 @@ class Register(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
-        user_activation_listener.delay(serializer.instance.pk)
+        self.send_register_email(serializer.instance)
+        # user_activation_listener.delay(serializer.instance.pk)
         # auth.login(self.request, serializer.instance)
+
+    def send_register_email(self, user):
+        sender = 'testit.roshan@gmail.com'
+        sender_pass = 'initpass'
+        msg = MIMEMultipart('alternative')
+        msg['Subject'] = "User Account Email"
+        msg['From'] = sender
+        msg['To'] = user.email
+        to = [user.email, ]
+        current_site = Site.objects.get_current()
+        domain = unicode(current_site.domain)
+        url = domain+"/auth/account/activate/"+user.username+"/"+str(user.uuid)+"/"
+        text = '<h2><a href="'+url+'">Click here</a> to activate your account.</h2>'
+        html = '<html><head></head><body><h2><a href="'+url+'">Click here</a> to activate your account.</h2></body></html>'
+        part1 = MIMEText(text, 'plain')
+        part2 = MIMEText(html, 'html')
+        msg.attach(part1)
+        msg.attach(part2)
+        try:
+            server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+            server.ehlo()
+            server.login(sender, sender_pass)
+            server.sendmail(sender, to, msg.as_string())
+            server.close()
+            print 'Email sent!'
+        except:
+            print 'Something went wrong...'
 
 
 class Login(generics.GenericAPIView):
