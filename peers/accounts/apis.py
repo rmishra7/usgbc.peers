@@ -1,10 +1,9 @@
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import auth
-from django.conf import settings
+from django.middleware.csrf import get_token
 from django.shortcuts import get_object_or_404
 from django.contrib.sites.models import Site
-from django.template.loader import get_template
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -53,7 +52,7 @@ class Register(generics.CreateAPIView):
         to = [user.email, ]
         current_site = Site.objects.get_current()
         domain = unicode(current_site.domain)
-        url = domain+"/auth/account/activate/"+user.username+"/"+str(user.uuid)+"/"
+        url = domain+"/auth/activate/"+user.username+"/"+str(user.uuid)+"/"
         text = '<h2><a href="'+url+'">Click here</a> to activate your account.</h2>'
         html = '<html><head></head><body><h2><a href="'+url+'">Click here</a> to activate your account.</h2></body></html>'
         part1 = MIMEText(text, 'plain')
@@ -123,8 +122,8 @@ class UserActivation(generics.GenericAPIView):
             raise exceptions.ParseError(_("Invalid Activation Token."))
         instance.account_activated = True
         instance.save()
-        instance.backend = settings.AUTHENTICATION_BACKENDS[0]
-        auth.login(self.request, instance)
+        # instance.backend = settings.AUTHENTICATION_BACKENDS[0]
+        # auth.login(self.request, instance)
         response_data = {
             'message': _('Account Activated Successfully.'),
         }
@@ -141,3 +140,14 @@ class UserList(generics.ListAPIView):
     queryset = model.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
     filter_fields = ('first_name', 'last_name')
+
+
+class GenerateCSRFToken(generics.GenericAPIView):
+    """
+    generate a csrf token
+    """
+    def get(self, request, *args, **kwargs):
+        response_data = {
+            "csrf": get_token(request)
+        }
+        return response.Response(response_data, status=status.HTTP_200_OK)

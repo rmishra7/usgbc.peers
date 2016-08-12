@@ -9,6 +9,7 @@ from .serializers import (
     ProjectSerializer, ProjectDetailSerializer, ProjectQuestionSerializer,
     CreditsAchievedSerializer, StrategySerializer, StrategyQuestionSerializer
     )
+from .countries import countries
 # from .tasks import project_submission_listener, project_submission_success_listener
 
 
@@ -138,3 +139,12 @@ class ProjectQuestionApi(generics.ListCreateAPIView):
     def get_queryset(self):
         project = Project.objects.get(pk=self.kwargs[self.lookup_url_kwargs])
         return self.queryset.filter(project=project)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        serializer.save()

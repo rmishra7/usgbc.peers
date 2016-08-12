@@ -361,9 +361,21 @@ class ProjectQuestion(models.Model):
     """
     mapping of project with question
     """
+    ZERO_TO_15_MIN = "1"
+    FIFTEEN_TO_60_MIN = "2"
+    MORE_THAN_60 = "3"
+
+    FREQUESNCY_RANGE_CHOICES = [
+        (ZERO_TO_15_MIN, "0 to < 15 mins"),
+        (FIFTEEN_TO_60_MIN, "> 15 mins to 60 mins"),
+        (MORE_THAN_60, "More than 60 mins")
+    ]
+
     project = models.ForeignKey(Project, related_name=_("project_question"))
     question = models.ForeignKey(StrategyQuestion, related_name=_("question_object"))
-    output = models.CharField(_("Question output for project"), max_length=50)
+    bool_output = models.NullBooleanField(_("Question output for boolean fields"), blank=True, null=True)
+    frequency_output = models.CharField(_("Question output for choice output"), max_length=1, choices=FREQUESNCY_RANGE_CHOICES, blank=True, null=True)
+    data_output = models.CharField(_("Question output for data fields"), max_length=50, blank=True, null=True)
     submitted_by = models.ForeignKey(Profile, related_name=_("question_answered_user"))
     file = models.FileField(_("Question File for Project"), upload_to=question_file_upload, blank=True, null=True)
 
