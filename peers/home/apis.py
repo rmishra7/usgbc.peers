@@ -1,6 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 
-from rest_framework import generics, response, status, serialzers
+from rest_framework import generics, response, status, serializers
 
 from .countries import countries_list
 from .states import states
@@ -21,7 +21,7 @@ class StatesApi(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         country_code = self.request.query_params.get('country_code', None)
         if country_code is None:
-            raise serialzers.validationError(_("Country Code is not provided."))
+            raise serializers.ValidationError({"Error": "Country Code is not provided."})
         result = states[country_code]
         response_data = {
             "states": result
