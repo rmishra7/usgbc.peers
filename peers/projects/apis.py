@@ -9,7 +9,6 @@ from .serializers import (
     ProjectSerializer, ProjectDetailSerializer, ProjectQuestionSerializer,
     CreditsAchievedSerializer, StrategySerializer, StrategyQuestionSerializer
     )
-from .countries import countries
 # from .tasks import project_submission_listener, project_submission_success_listener
 
 
