@@ -9,13 +9,14 @@ from email.mime.text import MIMEText
 
 import uuid
 import smtplib
-
 from rest_framework import generics, response, status, permissions, exceptions, filters
+from rest_framework.authtoken.models import Token
 
 from .permissions import IsNotAuthenticated
 from .models import Profile
 from .serializers import (
-    RegisterSerializer, LoginSerializer, LogOutSerializer, ProfileMiniSerializer)
+    RegisterSerializer, LoginSerializer, LogOutSerializer, ProfileMiniSerializer,
+    TokenSerializer, )
 # from .tasks import user_activation_listener
 
 
@@ -70,26 +71,70 @@ class Register(generics.CreateAPIView):
             print 'Something went wrong...'
 
 
-class Login(generics.GenericAPIView):
-
+class ActionViewMixin(object):
     """
-    Signin using your email address and password
+    Mixin to support busniess Actions in post
+    instead of serializer save
     """
-    serializer_class = LoginSerializer
-    permission_classes = (IsNotAuthenticated, )
-
-    def post(self, request, format=None):
-        """
-        Authenticate User againest credentials & return Authorization token
-        """
-        serializer = self.get_serializer(data=request.data)
+    def post(self, request):
+        serializer = self.get_serializer(
+            data=request.data)
         if serializer.is_valid():
             auth.login(request, serializer.instance)
-            response_data = {
-                'message': _('Logged in successfully'),
-            }
-            return response.Response(response_data, status=status.HTTP_200_OK)
-        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return self.action(serializer)
+        else:
+            return response.Response(
+                data=serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST)
+
+
+class Login(ActionViewMixin, generics.GenericAPIView):
+
+    """
+    Use this endpoint to obtain user authentication token.
+    """
+    serializer_class = LoginSerializer
+    permission_classes = (
+        IsNotAuthenticated,
+    )
+
+    def finalize_response(self, request, *args, **kwargs):
+        response_obj = super(Login, self).finalize_response(
+            request, *args, **kwargs)
+        if request.POST and response_obj.status_code == 200:
+            response_obj['Authorization'] = 'Token '\
+                + response_obj.data['auth_token']
+            response_obj.set_cookie(
+                'Authorization', response_obj['Authorization'])
+        return response_obj
+
+    def action(self, serializer):
+        user = serializer.instance
+        token, created = Token.objects.get_or_create(user=user)
+        return response.Response(
+            data=TokenSerializer(token).data,
+            status=status.HTTP_200_OK,
+        )
+# class Login(generics.GenericAPIView):
+
+#     """
+#     Signin using your email address and password
+#     """
+#     serializer_class = LoginSerializer
+#     permission_classes = (IsNotAuthenticated, )
+
+#     def post(self, request, format=None):
+#         """
+#         Authenticate User againest credentials & return Authorization token
+#         """
+#         serializer = self.get_serializer(data=request.data)
+#         if serializer.is_valid():
+#             auth.login(request, serializer.instance)
+#             response_data = {
+#                 'message': _('Logged in successfully'),
+#             }
+#             return response.Response(response_data, status=status.HTTP_200_OK)
+#         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LogOut(generics.GenericAPIView):

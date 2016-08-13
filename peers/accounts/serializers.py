@@ -2,6 +2,8 @@ from rest_framework import serializers
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import authenticate
 
+from rest_framework.authtoken.models import Token
+
 from .models import Profile, USER_ROLE_CHOICES
 
 
@@ -74,6 +76,16 @@ class RegisterSerializer(serializers.ModelSerializer, AuthMixin):
         model = Profile
         fields = (
             'first_name', 'last_name', 'email', 'password', 'password_confirmation',
+        )
+
+
+class TokenSerializer(serializers.ModelSerializer):
+    auth_token = serializers.CharField(source='key', read_only=True)
+
+    class Meta:
+        model = Token
+        fields = (
+            'auth_token',
         )
 
 
