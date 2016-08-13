@@ -53,7 +53,7 @@ class Register(generics.CreateAPIView):
         to = [user.email, ]
         current_site = Site.objects.get_current()
         domain = unicode(current_site.domain)
-        url = domain+"/account-activation.html/?username="+user.username+"&activation-token="+str(user.uuid)
+        url = domain+"/account-activation.html?username="+user.username+"&activation-token="+str(user.uuid)
         text = '<h2><a href="'+url+'">Click here</a> to activate your account.</h2>'
         html = '<html><head></head><body><h2><a href="'+url+'">Click here</a> to activate your account.</h2></body></html>'
         part1 = MIMEText(text, 'plain')
