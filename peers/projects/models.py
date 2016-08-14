@@ -36,52 +36,6 @@ class Project(models.Model):
         (SUPPLY, "Supply")
     ]
 
-    MUNICIPAL_UTILITY = "1"
-    SPECIAL_DISTRICT = "2"
-    CITYWIDE = "3"
-    INVESTOR_OWNED = "4"
-    UNIVERSITY_CAMPUS = "5"
-    INDUSTRIAL_PARK = "6"
-    MILITARY_BASE = "7"
-    LARGE_BUILDING = "8"
-    CHP_POWER_PLANT = "9"
-    INDUSTRIAL_FACILITY = "10"
-    THIRD_PARTY_SUPPLIER = "11"
-    OTHER = "12"
-
-    PROJECT_SUBTYPE_CHOICES = [
-        (MUNICIPAL_UTILITY, "Municipal Utility"),
-        (SPECIAL_DISTRICT, "Special District"),
-        (CITYWIDE, "City Wide"),
-        (INVESTOR_OWNED, "Investor Owned"),
-        (UNIVERSITY_CAMPUS, "University campus"),
-        (INDUSTRIAL_PARK, "Industrial Park"),
-        (MILITARY_BASE, "Military Base"),
-        (LARGE_BUILDING, "Large Building"),
-        (CHP_POWER_PLANT, "CHP Power Plant"),
-        (INDUSTRIAL_FACILITY, "Industrial Facility"),
-        (THIRD_PARTY_SUPPLIER, "Third Party Supplier"),
-        (OTHER, "Other")
-    ]
-
-    MEGA_WATT_HOURS = "MWh"
-    MILLION_UNITS = "MUs"
-    KILO_WATT_HOURS = "kWh"
-    BRITISH_THERMAL_UNIT = "BTU"
-    CALORIES = "cal"
-    JOULES = "joules"
-    MEGA_WATTS = "MW"
-
-    UNIT_CHOICES = [
-        (MEGA_WATT_HOURS, "Mega watt-hours (MWh)"),
-        (MILLION_UNITS, "Million units"),
-        (KILO_WATT_HOURS, "Kilo watt-hours (kWh)"),
-        (BRITISH_THERMAL_UNIT, "British thermal unit"),
-        (CALORIES, "Calories"),
-        (JOULES, "Joules"),
-        (MEGA_WATTS, "Mega watt (MW)")
-    ]
-
     name = models.CharField(_("Project Name"), max_length=120)
     description = models.TextField(_("Project Description"))
     city = models.CharField(_("City"), max_length=40)
@@ -99,36 +53,6 @@ class Project(models.Model):
         MaxLengthValidator(15)], blank=True, null=True)
     poc_email = models.EmailField(_("Point of Contact Email"), max_length=80)
     poc_designation = models.CharField(_("Point of Contact Designation"), max_length=80)
-    res_customer = models.IntegerField(_("No of Residential Customer"), blank=True, null=True)
-    comm_industrial1 = models.IntegerField(_("No of small commercial and industrial customers"), blank=True, null=True)
-    comm_industrial2 = models.IntegerField(_("No of large commercial and industrial customers"), blank=True, null=True)
-    annual_customer_load = models.CharField(_("Annual Customer Load"), max_length=20, blank=True, null=True)
-    customer_hr_peak_demand = models.CharField(_("Customer Annual Hourly Peak Demand"), max_length=20, blank=True, null=True)
-    peak_demand_unit = models.CharField(_("Peak Demand Unit"), max_length=10, default=MEGA_WATTS)
-    annual_purchased_elec = models.CharField(_("Annual Purchased Electricity"), max_length=20, blank=True, null=True)
-    purchased_hr_peak_demand = models.CharField(_("Purchased annual hourly peak demand"), max_length=10, blank=True, null=True)
-    purchased_hr_unit = models.CharField(_("Purchased Peak Demand Unit"), max_length=10, default=MEGA_WATTS)
-    tnd_losses = models.CharField(_("T&D Losses"), max_length=10, blank=True, null=True)
-
-    tot_local_elec_generation = models.CharField(_("Total Local Electricity Generation"), max_length=10, blank=True, null=True)
-    turbine_elec = models.CharField(_("Local Turbine Electricity Generation"), max_length=10, blank=True, null=True)
-    chp_elec = models.CharField(_("Local CHP natual gas Electricity Generation"), max_length=10, blank=True, null=True)
-    high_efficiency_gas_elec = models.CharField(_("Local High Efficiency Electricity generation"), max_length=10, blank=True, null=True)
-    local_other_gas_elec = models.CharField(_("Local other Gas Electricity Generation"), max_length=10, blank=True, null=True)
-    wind_solar_pv_elec = models.CharField(_("Wind Solar PV Electricity Generation"), max_length=10, blank=True, null=True)
-    biomass_elec = models.CharField(_("Biomass Electricity Generation"), max_length=10, blank=True, null=True)
-    geothermal_elec = models.CharField(_("Geothermal Electricity Generation"), max_length=10, blank=True, null=True)
-    other_local_elec = models.CharField(_("Other Renewable Electricity Generation"), max_length=10, blank=True, null=True)
-
-    tot_local_generation_capacity = models.CharField(_("Total Local Electricity Generation Capacity"), max_length=10, blank=True, null=True)
-    turbine_elec_capacity = models.CharField(_("Local Turbine Electricity Generation Capacity"), max_length=10, blank=True, null=True)
-    chp_elec_capacity = models.CharField(_("Local CHP natual gas Electricity Generation Capacity"), max_length=10, blank=True, null=True)
-    high_efficiency_gas_elec_capacity = models.CharField(_("Local High Efficiency Electricity generation Capacity"), max_length=10, blank=True, null=True)
-    local_other_gas_elec_capacity = models.CharField(_("Local other Gas Electricity Generation Capacity"), max_length=10, blank=True, null=True)
-    wind_solar_pv_elec_capacity = models.CharField(_("Wind Solar PV Electricity Generation Capacity"), max_length=10, blank=True, null=True)
-    biomass_elec_capacity = models.CharField(_("Biomass Electricity Generation Capacity"), max_length=10, blank=True, null=True)
-    geothermal_elec_capacity = models.CharField(_("Geothermal Electricity Generation Capacity"), max_length=10, blank=True, null=True)
-    other_local_elec_capacity = models.CharField(_("Other Renewable Electricity Generation Capacity"), max_length=10, blank=True, null=True)
 
     status = models.CharField(_("Project Status"), max_length=1, choices=PROJECT_STATUS_CHOICES)
     uuid = models.UUIDField(_("Project Unique ID"), default=uuid.uuid4, editable=False)
@@ -149,6 +73,72 @@ class Project(models.Model):
 
     def __unicode__(self):
         return "%s" % (self.name)
+
+
+class ProjectSpecificInfo(models.Model):
+    """
+    model to update project specific data
+    """
+    MEGA_WATT_HOURS = "MWh"
+    MILLION_UNITS = "MUs"
+    KILO_WATT_HOURS = "kWh"
+    BRITISH_THERMAL_UNIT = "BTU"
+    CALORIES = "cal"
+    JOULES = "joules"
+    MEGA_WATTS = "MW"
+
+    UNIT_CHOICES = [
+        (MEGA_WATT_HOURS, "Mega watt-hours (MWh)"),
+        (MILLION_UNITS, "Million units"),
+        (KILO_WATT_HOURS, "Kilo watt-hours (kWh)"),
+        (BRITISH_THERMAL_UNIT, "British thermal unit"),
+        (CALORIES, "Calories"),
+        (JOULES, "Joules"),
+        (MEGA_WATTS, "Mega watt (MW)")
+    ]
+
+    project = models.ForeignKey(Project, related_name=_("project_specific"))
+    res_customer = models.IntegerField(_("No of Residential Customer"), blank=True, null=True)
+    comm_industrial1 = models.IntegerField(_("No of small commercial and industrial customers"), blank=True, null=True)
+    comm_industrial2 = models.IntegerField(_("No of large commercial and industrial customers"), blank=True, null=True)
+    electricity_unit = models.CharField(_("Electricity Default Unit"), max_length=10, blank=True, null=True)
+    thermal_unit = models.CharField(_("Thermal/Heat Energy Unit"), max_length=15, blank=True, null=True)
+    currency = models.CharField(_("Default Currency"), max_length=20, blank=True, null=True)
+    annual_customer_load = models.DecimalField(_("Annual Customer Load"), max_digits=10, decimal_places=4, blank=True, null=True)
+    customer_hr_peak_demand = models.DecimalField(_("Customer Annual Hourly Peak Demand"), max_digits=10, decimal_places=4, blank=True, null=True)
+    peak_demand_unit = models.CharField(_("Peak Demand Unit"), max_length=10, default=MEGA_WATTS)
+    annual_purchased_elec = models.DecimalField(_("Annual Purchased Electricity"), max_digits=10, decimal_places=4, blank=True, null=True)
+    purchased_hr_peak_demand = models.DecimalField(_("Purchased annual hourly peak demand"), max_digits=10, decimal_places=4, blank=True, null=True)
+    purchased_hr_unit = models.CharField(_("Purchased Peak Demand Unit"), max_length=10, default=MEGA_WATTS)
+    tnd_losses = models.DecimalField(_("T&D Losses"), max_digits=10, decimal_places=4, blank=True, null=True)
+
+    tot_local_elec_generation = models.DecimalField(_("Total Local Electricity Generation"), max_digits=10, decimal_places=4, blank=True, null=True)
+    turbine_elec = models.DecimalField(_("Local Turbine Electricity Generation"), max_digits=10, decimal_places=4, blank=True, null=True)
+    chp_elec = models.DecimalField(_("Local CHP natual gas Electricity Generation"), max_digits=10, decimal_places=4, blank=True, null=True)
+    high_efficiency_gas_elec = models.DecimalField(_("Local High Efficiency Electricity generation"), max_digits=10, decimal_places=4, blank=True, null=True)
+    local_other_gas_elec = models.DecimalField(_("Local other Gas Electricity Generation"), max_digits=10, decimal_places=4, blank=True, null=True)
+    wind_solar_pv_elec = models.DecimalField(_("Wind Solar PV Electricity Generation"), max_digits=10, decimal_places=4, blank=True, null=True)
+    biomass_elec = models.DecimalField(_("Biomass Electricity Generation"), max_digits=10, decimal_places=4, blank=True, null=True)
+    geothermal_elec = models.DecimalField(_("Geothermal Electricity Generation"), max_digits=10, decimal_places=4, blank=True, null=True)
+    other_local_elec = models.DecimalField(_("Other Renewable Electricity Generation"), max_digits=10, decimal_places=4, blank=True, null=True)
+
+    tot_local_generation_capacity = models.DecimalField(_("Total Local Electricity Generation Capacity"), max_digits=10, decimal_places=4, blank=True, null=True)
+    turbine_elec_capacity = models.DecimalField(_("Local Turbine Electricity Generation Capacity"), max_digits=10, decimal_places=4, blank=True, null=True)
+    chp_elec_capacity = models.DecimalField(_("Local CHP natual gas Electricity Generation Capacity"), max_digits=10, decimal_places=4, blank=True, null=True)
+    high_efficiency_gas_elec_capacity = models.DecimalField(_("Local High Efficiency Electricity generation Capacity"), max_digits=10, decimal_places=4, blank=True, null=True)
+    local_other_gas_elec_capacity = models.DecimalField(_("Local other Gas Electricity Generation Capacity"), max_digits=10, decimal_places=4, blank=True, null=True)
+    wind_solar_pv_elec_capacity = models.DecimalField(_("Wind Solar PV Electricity Generation Capacity"), max_digits=10, decimal_places=4, blank=True, null=True)
+    biomass_elec_capacity = models.DecimalField(_("Biomass Electricity Generation Capacity"), max_digits=10, decimal_places=4, blank=True, null=True)
+    geothermal_elec_capacity = models.DecimalField(_("Geothermal Electricity Generation Capacity"), max_digits=10, decimal_places=4, blank=True, null=True)
+    other_local_elec_capacity = models.DecimalField(_("Other Renewable Electricity Generation Capacity"), max_digits=10, decimal_places=4, blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("ProjectSpecificInfo")
+        verbose_name_plural = _("ProjectSpecificInfos")
+        app_label = "projects"
+
+    def __unicode__(self):
+        return "%s" % (self.project.name)
 
 
 class CreditsAchieved(models.Model):
