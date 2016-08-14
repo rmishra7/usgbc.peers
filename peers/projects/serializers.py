@@ -89,15 +89,15 @@ class ProjectSpecificDetailSerializer(serializers.ModelSerializer):
         view = self.context.get('view')
         project = get_object_or_404(Project, pk=view.kwargs[view.lookup_url_kwargs])
         attrs['project'] = project
-        total = attrs.get('turbine_elec', 0.00) + attrs.get('chp_elec') + attrs.get('high_efficiency_gas_elec') + attrs.get('local_other_gas_elec') + attrs.get('wind_solar_pv_elec') + attrs.get('biomass_elec') + attrs.get('geothermal_elec') + attrs.get('other_local_elec')
-        attrs['turbine_elec'] = (attrs['turbine_elec']/total)*100
-        attrs['chp_elec'] = (attrs['chp_elec']/total)*100
-        attrs['high_efficiency_gas_elec'] = (attrs['high_efficiency_gas_elec']/total)*100
-        attrs['local_other_gas_elec'] = (attrs['local_other_gas_elec']/total)*100
-        attrs['wind_solar_pv_elec'] = (attrs['wind_solar_pv_elec']/total)*100
-        attrs['biomass_elec'] = (attrs['biomass_elec']/total)*100
-        attrs['geothermal_elec'] = (attrs['geothermal_elec']/total)*100
-        attrs['other_local_elec'] = (attrs['other_local_elec']/total)*100
+        total = attrs.get('turbine_elec', 0.00) + attrs.get('chp_elec', 0.00) + attrs.get('high_efficiency_gas_elec', 0.00) + attrs.get('local_other_gas_elec', 0.00) + attrs.get('wind_solar_pv_elec', 0.00) + attrs.get('biomass_elec', 0.00) + attrs.get('geothermal_elec', 0.00) + attrs.get('other_local_elec', 0.00)
+        attrs['turbine_elec'] = (attrs.get('turbine_elec', 0.00)/total)*100
+        attrs['chp_elec'] = (attrs.get('chp_elec', 0.00)/total)*100
+        attrs['high_efficiency_gas_elec'] = (attrs.get('high_efficiency_gas_elec', 0.00)/total)*100
+        attrs['local_other_gas_elec'] = (attrs.get('local_other_gas_elec', 0.00)/total)*100
+        attrs['wind_solar_pv_elec'] = (attrs.get('wind_solar_pv_elec', 0.00)/total)*100
+        attrs['biomass_elec'] = (attrs.get('biomass_elec', 0.00)/total)*100
+        attrs['geothermal_elec'] = (attrs.get('geothermal_elec', 0.00)/total)*100
+        attrs['other_local_elec'] = (attrs.get('other_local_elec', 0.00)/total)*100
         return attrs
 
     class Meta:
