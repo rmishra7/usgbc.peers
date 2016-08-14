@@ -189,7 +189,7 @@ class CreditsAchieved(models.Model):
     supply_credit = models.BooleanField(_("Supply Credit"), default=False)
     criteria = models.CharField(_("Credit Criteria"), max_length=5, choices=CREDIT_CRITERIA_CHOICES)
     type = models.CharField(_("Credit Type"), max_length=5, choices=CREDIT_TYPE_CHOICES)
-    intent = models.CharField(_("Credit Intent"), max_length=200)
+    intent = models.TextField(_("Credit Intent"))
     delete = models.BooleanField(_("Delete"), default=False)
 
     objects = CreditsAchievedManager()
@@ -266,10 +266,21 @@ class StrategyQuestion(models.Model):
     EEC_12_2 = "EEC122"
     OES_6_1 = "OES61"
     OEC_6_2 = "OEC62"
-    CCS_1_1 = "CCS11"
-    CCS_1_2 = "CCS12"
+    CCC_1_1 = "CCC11"
+    CCC_1_2 = "CCC12"
     CCC_1_3 = "CCC13"
     CCC_1_4 = "CCC14"
+    CCC_1_5 = "CCC15"
+    CCC_1_6 = "CCC16"
+    CCC_1_7 = "CCC17"
+    CCS_1_1 = "CCS11"
+    CCS_1_2 = "CCS12"
+    CCS_1_3 = "CCS13"
+    CCS_1_4 = "CCS14"
+    CCS_1_5 = "CCS15"
+    CCS_1_6 = "CCS16"
+    CCS_1_7 = "CCS17"
+    CCS_1_8 = "CCS18"
 
     QUESTION_CODE_CHOICES = [
         (RRS_1_1, "RRS-1.1"),
@@ -289,10 +300,21 @@ class StrategyQuestion(models.Model):
         (EEC_12_2, "EEC-12.2"),
         (OES_6_1, "OES-6.1"),
         (OEC_6_2, "OEC-6.2"),
+        (CCC_1_1, "CCC-1.1"),
+        (CCC_1_2, "CCC-1.2"),
+        (CCC_1_3, "CCC-1.3"),
+        (CCC_1_4, "CCC-1.4"),
+        (CCC_1_5, "CCC-1.5"),
+        (CCC_1_6, "CCC-1.6"),
+        (CCC_1_7, "CCC-1.7"),
         (CCS_1_1, "CCS-1.1"),
         (CCS_1_2, "CCS-1.2"),
-        (CCC_1_3, "CCC-1.3"),
-        (CCC_1_4, "CCC-1.4")
+        (CCS_1_3, "CCS-1.3"),
+        (CCS_1_4, "CCS-1.4"),
+        (CCS_1_5, "CCS-1.5"),
+        (CCS_1_6, "CCS-1.6"),
+        (CCS_1_7, "CCS-1.7"),
+        (CCS_1_8, "CCS-1.8"),
     ]
 
     LABEL = "label"
