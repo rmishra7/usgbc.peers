@@ -89,15 +89,17 @@ class ProjectSpecificDetailSerializer(serializers.ModelSerializer):
         view = self.context.get('view')
         project = get_object_or_404(Project, pk=view.kwargs[view.lookup_url_kwargs])
         attrs['project'] = project
-        turbine_elec = attrs.get('turbine_elec') if attrs.get('turbine_elec') is not None else 0.00
-        chp_elec = attrs.get('chp_elec') if attrs.get('chp_elec') is not None else 0.00
-        high_efficiency_gas_elec = attrs.get('high_efficiency_gas_elec') if attrs.get('high_efficiency_gas_elec') is not None else 0.00
-        local_other_gas_elec = attrs.get('local_other_gas_elec') if attrs.get('local_other_gas_elec') is not None else 0.00
-        wind_solar_pv_elec = attrs.get('wind_solar_pv_elec') if attrs.get('wind_solar_pv_elec') is not None else 0.00
-        biomass_elec = attrs.get('biomass_elec') if attrs.get('biomass_elec') is not None else 0.00
-        geothermal_elec = attrs.get('geothermal_elec') if attrs.get('geothermal_elec') is not None else 0.00
-        other_local_elec = attrs.get('other_local_elec') if attrs.get('other_local_elec') is not None else 0.00
+        turbine_elec = attrs.get('turbine_elec') if attrs.get('turbine_elec') is not None else 0
+        chp_elec = attrs.get('chp_elec') if attrs.get('chp_elec') is not None else 0
+        high_efficiency_gas_elec = attrs.get('high_efficiency_gas_elec') if attrs.get('high_efficiency_gas_elec') is not None else 0
+        local_other_gas_elec = attrs.get('local_other_gas_elec') if attrs.get('local_other_gas_elec') is not None else 0
+        wind_solar_pv_elec = attrs.get('wind_solar_pv_elec') if attrs.get('wind_solar_pv_elec') is not None else 0
+        biomass_elec = attrs.get('biomass_elec') if attrs.get('biomass_elec') is not None else 0
+        geothermal_elec = attrs.get('geothermal_elec') if attrs.get('geothermal_elec') is not None else 0
+        other_local_elec = attrs.get('other_local_elec') if attrs.get('other_local_elec') is not None else 0
         total = turbine_elec + chp_elec + high_efficiency_gas_elec + local_other_gas_elec + wind_solar_pv_elec + biomass_elec + geothermal_elec + other_local_elec
+        if total == 0:
+            total = 1
         attrs['turbine_elec'] = (turbine_elec/total)*100
         attrs['chp_elec'] = (chp_elec/total)*100
         attrs['high_efficiency_gas_elec'] = (high_efficiency_gas_elec/total)*100
