@@ -120,7 +120,8 @@ class ProjectSpecificDetailSerializer(serializers.ModelSerializer):
             'other_local_elec', 'tot_local_generation_capacity', 'turbine_elec_capacity',
             'chp_elec_capacity', 'high_efficiency_gas_elec_capacity', 'local_other_gas_elec_capacity',
             'wind_solar_pv_elec_capacity', 'biomass_elec_capacity', 'geothermal_elec_capacity',
-            'other_local_elec_capacity', 'electricity_unit', 'thermal_unit', 'currency')
+            'other_local_elec_capacity', 'electricity_unit', 'thermal_unit', 'currency',
+            'frequency_range', 'customer_served')
 
 
 class CreditsAchievedSerializer(serializers.ModelSerializer):
