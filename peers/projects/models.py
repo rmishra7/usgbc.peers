@@ -37,6 +37,7 @@ class Project(models.Model):
     ]
 
     name = models.CharField(_("Project Name"), max_length=120)
+    region = models.CharField(_("Project Region"), max_length=200, blank=True, null=True)
     description = models.TextField(_("Project Description"))
     city = models.CharField(_("City"), max_length=40)
     state = models.CharField(_("State/Province"), max_length=40)
