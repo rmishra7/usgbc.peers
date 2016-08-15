@@ -40,7 +40,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = (
-            'id', 'name', 'description', 'city', 'state', 'country', 'org_name',
+            'id', 'name', 'description', 'city', 'state', 'country', 'org_name', 'region',
             'poc_name', 'poc_contact', 'poc_email', 'poc_designation', 'created_by', 'project_type',
             'updated_by', 'created_at', 'uuid', 'updated_at', 'project_owner', 'project_status', 'zipcode')
         read_only_fields = ('uuid', )
@@ -71,7 +71,7 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
         model = Project
         fields = (
             'id', 'name', 'description', 'city', 'state', 'country', 'org_name', 'project_type',
-            'poc_name', 'poc_contact', 'poc_email', 'poc_designation', 'created_by',
+            'poc_name', 'poc_contact', 'poc_email', 'poc_designation', 'created_by', 'region',
             'updated_by', 'created_at', 'updated_at', 'project_owner', 'zipcode', 'project_status')
         # extra_kwargs = {
         #     'status': {'write_only': True},
