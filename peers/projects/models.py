@@ -239,7 +239,26 @@ class Strategy(models.Model):
     """
     strategy model for credits
     """
+    AMR_1A = "amr1a"
+    AMR_1B = "amr1b"
+    SEI_EE = "seiee"
+    LRG_EE = "lrgee"
+    EEE_OE = "eeeoe"
+    AMI_CC = "amicc"
+    NTM_CC = "ntmcc"
+
+    STRATEGY_UNIQUE_CHOICES = [
+        (AMR_1A, "Advance Metering 1A"),
+        (AMR_1B, "Advance Metering 1B"),
+        (SEI_EE, "Source Energy Intensity EE"),
+        (LRG_EE, "Local Renewable Generation EE"),
+        (EEE_OE, "Electricity Energy Efficiency OE"),
+        (AMI_CC, "Advance Metering Infrastructure CC"),
+        (NTM_CC, "Net Metering CC")
+    ]
+
     credit = models.ForeignKey(CreditsAchieved, related_name=_("credit_strategy"))
+    unique_id = models.CharField(_("Strategy Unique ID"), max_length=5, choices=STRATEGY_UNIQUE_CHOICES)
     name = models.CharField(_("Strategy Name"), max_length=100)
     description = models.TextField(_("Strategy Description"), blank=True, null=True)
     successmessage = models.TextField(_("Strategy Success Message"), blank=True, null=True)
@@ -382,33 +401,21 @@ def question_file_upload(instance, filename):
     return "strategy/docs%s" % (filename)
 
 
-class ProjectQuestion(models.Model):
+class ProjectStrategy(models.Model):
     """
     mapping of project with question
     """
-    ZERO_TO_15_MIN = "1"
-    FIFTEEN_TO_60_MIN = "2"
-    MORE_THAN_60 = "3"
-
-    FREQUESNCY_RANGE_CHOICES = [
-        (ZERO_TO_15_MIN, "0 to < 15 mins"),
-        (FIFTEEN_TO_60_MIN, "> 15 mins to 60 mins"),
-        (MORE_THAN_60, "More than 60 mins")
-    ]
-
     project = models.ForeignKey(Project, related_name=_("project_question"))
-    question = models.ForeignKey(StrategyQuestion, related_name=_("question_object"))
-    bool_output = models.NullBooleanField(_("Question output for boolean fields"), blank=True, null=True)
-    frequency_output = models.CharField(_("Question output for choice output"), max_length=1, choices=FREQUESNCY_RANGE_CHOICES, blank=True, null=True)
-    data_output = models.CharField(_("Question output for data fields"), max_length=50, blank=True, null=True)
-    submitted_by = models.ForeignKey(Profile, related_name=_("question_answered_user"))
+    strategy = models.ForeignKey(Strategy, related_name=_("project_strategy"))
     file = models.FileField(_("Question File for Project"), upload_to=question_file_upload, blank=True, null=True)
+    status = models.CharField(_("Strategy Status"), max_length=20, default="completed")
+    submitted_by = models.ForeignKey(Profile, related_name=_("question_answered_user"))
 
     objects = ProjectQuestionManager()
 
     class Meta:
-        verbose_name = _("ProjectQuestion")
-        verbose_name_plural = _("ProjectQuestions")
+        verbose_name = _("ProjectStrategy")
+        verbose_name_plural = _("ProjectStrategys")
         app_label = "projects"
 
     def __unicode__(self):

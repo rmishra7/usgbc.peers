@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
 from .models import (
-    Project, ProjectQuestion, StrategyQuestion, CreditsAchieved, Strategy,
+    Project, ProjectStrategy, StrategyQuestion, CreditsAchieved, Strategy,
     ProjectSpecificInfo)
 from accounts.serializers import ProfileMiniSerializer
 
@@ -148,7 +148,7 @@ class StrategyQuestionSerializer(serializers.ModelSerializer):
         model = StrategyQuestion
 
 
-class ProjectQuestionSerializer(serializers.ModelSerializer):
+class ProjectStrategySerializer(serializers.ModelSerializer):
     """
     ProjectQuestionSerializer
     """
@@ -159,12 +159,12 @@ class ProjectQuestionSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         view = self.context.get('view')
         project = get_object_or_404(Project, pk=view.kwargs[view.lookup_url_kwargs])
-        question = get_object_or_404(StrategyQuestion, pk=view.kwargs[view.lookup_field])
+        strategy = get_object_or_404(Strategy, unique_id=view.kwargs[view.lookup_field])
         attrs['project'] = project
-        attrs['question'] = question
+        attrs['strategy'] = strategy
         attrs['submitted_by'] = view.request.user
         return attrs
 
     class Meta:
-        model = ProjectQuestion
-        read_only_fields = ('project', 'question', 'submitted_by')
+        model = ProjectStrategy
+        read_only_fields = ('project', 'strategy', 'submitted_by')

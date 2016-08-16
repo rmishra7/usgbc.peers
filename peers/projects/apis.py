@@ -5,10 +5,10 @@ from rest_framework import generics, status, response, permissions
 import uuid
 
 from .models import (
-    Project, ProjectQuestion, CreditsAchieved, Strategy, StrategyQuestion,
+    Project, ProjectStrategy, CreditsAchieved, Strategy, StrategyQuestion,
     ProjectSpecificInfo, )
 from .serializers import (
-    ProjectSerializer, ProjectDetailSerializer, ProjectQuestionSerializer,
+    ProjectSerializer, ProjectDetailSerializer, ProjectStrategySerializer,
     CreditsAchievedSerializer, StrategySerializer, StrategyQuestionSerializer,
     ProjectSpecificDetailSerializer,
     )
@@ -166,21 +166,16 @@ class StrategyQuestionApi(generics.ListAPIView):
         return self.queryset.filter(strategy=strategy)
 
 
-class ProjectQuestionApi(generics.ListCreateAPIView):
+class ProjectStrategyApi(generics.CreateAPIView):
     """
     api to save answered data on a strategy's question by user
     """
-    model = ProjectQuestion
+    model = ProjectStrategy
     page_size = 10
-    serializer_class = ProjectQuestionSerializer
+    serializer_class = ProjectStrategySerializer
     permission_classes = [permissions.IsAuthenticated, ]
-    queryset = model.objects.all()
     lookup_url_kwargs = "project_pk"
-    lookup_field = "question_pk"
-
-    def get_queryset(self):
-        project = Project.objects.get(pk=self.kwargs[self.lookup_url_kwargs])
-        return self.queryset.filter(project=project)
+    lookup_field = "strategy_unique"
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
