@@ -3,8 +3,8 @@ from django.db.models.query import QuerySet
 from django.db import models
 
 from .mixins import (
-    ProjectMixin, CreditsAchievedMixin, StrategyMixin, ProjectQuestionMixin, StrategyQuestionMixin,
-    CreditsValueMappingMixin, ProjectPlantMappingMixin, ElectricityPlantUnitMixin,
+    ProjectMixin, CreditsAchievedMixin, StrategyMixin, ProjectStrategyMixin, StrategyQuestionMixin,
+    CreditsValueMappingMixin, ProjectPlantMixin, ProjectPlantUnitMixin, ElectricityPlantUnitMixin,
     ProjectElectricityPlantMixin, CreditsKeywordMixin
     )
 
@@ -59,14 +59,14 @@ class StrategyQuestionManager(models.Manager, StrategyQuestionMixin):
         return StrategyQuestionQuerySet(self.model, using=self._db)
 
 
-class ProjectQuestionQuerySet(QuerySet, ProjectQuestionMixin):
+class ProjectStrategyQuerySet(QuerySet, ProjectStrategyMixin):
     pass
 
 
-class ProjectQuestionManager(models.Manager, ProjectQuestionMixin):
+class ProjectStrategyManager(models.Manager, ProjectStrategyMixin):
 
     def get_queryset(self):
-        return ProjectQuestionQuerySet(self.model, using=self._db)
+        return ProjectStrategyQuerySet(self.model, using=self._db)
 
 
 class ProjectElectricityPlantQuerySet(QuerySet, ProjectElectricityPlantMixin):
@@ -89,14 +89,24 @@ class ElectricityPlantUnitManager(models.Manager, ElectricityPlantUnitMixin):
         return ElectricityPlantUnitQuerySet(self.model, using=self._db)
 
 
-class ProjectPlantMappingQuerySet(QuerySet, ProjectPlantMappingMixin):
+class ProjectPlantQuerySet(QuerySet, ProjectPlantMixin):
     pass
 
 
-class ProjectPlantMappingManager(models.Manager, ProjectPlantMappingMixin):
+class ProjectPlantManager(models.Manager, ProjectPlantMixin):
 
     def get_queryset(self):
-        return ProjectPlantMappingQuerySet(self.model, using=self._db)
+        return ProjectPlantQuerySet(self.model, using=self._db)
+
+
+class ProjectPlantUnitQuerySet(QuerySet, ProjectPlantUnitMixin):
+    pass
+
+
+class ProjectPlantUnitManager(QuerySet, ProjectPlantUnitMixin):
+
+    def get_queryset(self):
+        return ProjectPlantUnitQuerySet(self.model, using=self._db)
 
 
 class CreditsKeywordQuerySet(QuerySet, CreditsKeywordMixin):

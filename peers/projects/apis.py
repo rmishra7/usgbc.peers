@@ -6,11 +6,11 @@ import uuid
 
 from .models import (
     Project, ProjectStrategy, CreditsAchieved, Strategy, StrategyQuestion,
-    ProjectSpecificInfo, )
+    ProjectSpecificInfo, ProjectPlant, ElectricityPlant)
 from .serializers import (
     ProjectSerializer, ProjectDetailSerializer, ProjectStrategySerializer,
     CreditsAchievedSerializer, StrategySerializer, StrategyQuestionSerializer,
-    ProjectSpecificDetailSerializer,
+    ProjectSpecificDetailSerializer, ProjectPlantSerializer, ElectricityPlantSerializer
     )
 # from .tasks import project_submission_listener, project_submission_success_listener
 
@@ -185,3 +185,48 @@ class ProjectStrategyApi(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
+
+
+class ProjectPlantApi(generics.ListCreateAPIView):
+    """
+    api to list/create project plant entry
+    """
+    model = ProjectPlant
+    page_size = 10
+    serializer_class = ProjectPlantSerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+    lookup_url_kwargs = "project_pk"
+    queryset = model.objects.all()
+
+    def get_queryset(self):
+        project = get_object_or_404(Project, pk=self.kwargs[self.lookup_url_kwargs])
+        return self.queryset.filter(project=project)
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def perform_create(self, serializer):
+        serializer.save()
+
+
+class ElectricityPlantList(generics.ListAPIView):
+    """
+    api to return list of electricity plants
+    """
+    model = ElectricityPlant
+    page_size = 10
+    serializer_class = ElectricityPlantSerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+    queryset = model.objects.all()
+
+    def get_queryset(self):
+        kwargs = {}
+        for k, vals in self.request.GET.lists():
+            for v in vals:
+                kwargs[k] = v
+        if not kwargs:
+            return self.queryset
+        return self.queryset.filter(**kwargs)

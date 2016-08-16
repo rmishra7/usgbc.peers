@@ -13,7 +13,7 @@ class StrategyMixin(object):
     pass
 
 
-class ProjectQuestionMixin(object):
+class ProjectStrategyMixin(object):
     pass
 
 
@@ -25,7 +25,11 @@ class CreditsValueMappingMixin(object):
     pass
 
 
-class ProjectPlantMappingMixin(object):
+class ProjectPlantMixin(object):
+    pass
+
+
+class ProjectPlantUnitMixin(object):
     pass
 
 

@@ -8,8 +8,8 @@ import uuid
 
 from .managers import (
     ProjectManager, CreditsAchievedManager, CreditsValueMappingManager, StrategyManager,
-    StrategyQuestionManager, ProjectQuestionManager, ProjectElectricityPlantManager,
-    ElectricityPlantUnitManager, ProjectPlantMappingManager, CreditsKeywordManager
+    StrategyQuestionManager, ProjectStrategyManager, ProjectElectricityPlantManager,
+    ElectricityPlantUnitManager, ProjectPlantManager, ProjectPlantUnitManager, CreditsKeywordManager
     )
 from accounts.models import Profile
 
@@ -108,7 +108,18 @@ class ProjectSpecificInfo(models.Model):
         (ITR_FRQ3, "More than 60 mins")
     ]
 
+    MGA = "mga"
+    SCREENING = "scr"
+    PPP = "ppp"
+
+    PAYMENT_OPTION_CHOICES = [
+        (MGA, "Micro Grid 8760 Analysis"),
+        (SCREENING, "Screening"),
+        (PPP, "PEER Participation Package")
+    ]
+
     project = models.ForeignKey(Project, related_name=_("project_specific"))
+    sei = models.DecimalField(_("Project SEI value"), max_digits=8, decimal_places=2, blank=True, null=True)
     frequency_range = models.CharField(_("Interruption Frequency Range"), max_length=5, choices=INTERRUPTION_FREQUENCY_RANGE, blank=True, null=True)
     customer_served = models.DecimalField(_("Customer Served with Advance Meter"), max_digits=3, decimal_places=1, blank=True, null=True)
     res_customer = models.IntegerField(_("No of Residential Customer"), blank=True, null=True)
@@ -124,6 +135,7 @@ class ProjectSpecificInfo(models.Model):
     purchased_hr_peak_demand = models.DecimalField(_("Purchased annual hourly peak demand"), max_digits=12, decimal_places=2, blank=True, null=True)
     purchased_hr_unit = models.CharField(_("Purchased Peak Demand Unit"), max_length=10, default=MEGA_WATTS)
     tnd_losses = models.DecimalField(_("T&D Losses"), max_digits=12, decimal_places=2, blank=True, null=True)
+    payment_option = models.CharField(_("Payment Option"), max_length=3, choices=PAYMENT_OPTION_CHOICES, blank=True, null=True)
 
     tot_local_elec_generation = models.DecimalField(_("Total Local Electricity Generation"), max_digits=12, decimal_places=2, blank=True, null=True)
     turbine_elec = models.DecimalField(_("Local Turbine Electricity Generation"), max_digits=12, decimal_places=2, blank=True, null=True)
@@ -144,6 +156,14 @@ class ProjectSpecificInfo(models.Model):
     biomass_elec_capacity = models.DecimalField(_("Biomass Electricity Generation Capacity"), max_digits=12, decimal_places=2, blank=True, null=True)
     geothermal_elec_capacity = models.DecimalField(_("Geothermal Electricity Generation Capacity"), max_digits=12, decimal_places=2, blank=True, null=True)
     other_local_elec_capacity = models.DecimalField(_("Other Renewable Electricity Generation Capacity"), max_digits=12, decimal_places=2, blank=True, null=True)
+
+    bulk_coal = models.DecimalField(_("Purchased Bulk Coal Electricity"), max_digits=12, decimal_places=2, blank=True, null=True)
+    bulk_petroleum = models.DecimalField(_("Purchased Bulk Petroleum Electricity"), max_digits=12, decimal_places=2, blank=True, null=True)
+    bulk_simple_gas = models.DecimalField(_("Purchased Bulk Simple Gas Electricity"), max_digits=12, decimal_places=2, blank=True, null=True)
+    bulk_high_eff_gas = models.DecimalField(_("Purchased Bulk High Efficiency Electricity"), max_digits=12, decimal_places=2, blank=True, null=True)
+    bulk_hydro = models.DecimalField(_("Purchased Bulk Hydro Electricity"), max_digits=12, decimal_places=2, blank=True, null=True)
+    bulk_nuclear = models.DecimalField(_("Purchased Bulk Nuclear Electricity"), max_digits=12, decimal_places=2, blank=True, null=True)
+    bulk_solar_pv_wind = models.DecimalField(_("Purchased Bulk Solar and Wind Electricity"), max_digits=12, decimal_places=2, blank=True, null=True)
 
     class Meta:
         verbose_name = _("ProjectSpecificInfo")
@@ -411,7 +431,7 @@ class ProjectStrategy(models.Model):
     status = models.CharField(_("Strategy Status"), max_length=20, default="completed")
     submitted_by = models.ForeignKey(Profile, related_name=_("question_answered_user"))
 
-    objects = ProjectQuestionManager()
+    objects = ProjectStrategyManager()
 
     class Meta:
         verbose_name = _("ProjectStrategy")
@@ -508,24 +528,102 @@ class ElectricityPlantUnit(models.Model):
         return "%s:%s" % (self.plant.plant_name) % str(self.unit_no)
 
 
-class ProjectPlantMapping(models.Model):
+class ProjectPlant(models.Model):
     """
-    mapping of project with plant from which it getting Electricity
+    Plantwise SEI for the specified country
     """
-    project = models.ForeignKey(Project, related_name=_("project_plant"))
-    plant = models.ForeignKey(ElectricityPlant, related_name=_("elec_plant"))
-    plant_unit = models.ForeignKey(ElectricityPlantUnit, related_name=_("project_plant_unit"), blank=True, null=True)
-    electricity_deliver = models.CharField(_("Electricity Delivered to Project"), max_length=10, default=0)
+    COAL = "coal"
+    NUCLEAR = "nuclear"
+    GAS = "cas"
+    PETROLEUM = "Petroleum"
+    SIMPLE_GAS = "simple gas"
+    WIND = "wind"
+    (PETROLEUM, "Petroleum"),
+    (SIMPLE_GAS, "Simple Gas"),
+    (WIND, "Wind"),
+    OTHER_MEAN = "other mean"
 
-    objects = ProjectPlantMappingManager()
+    FUEL_TYPE_CHOICES = [
+        (COAL, "Coal"),
+        (NUCLEAR, "Nuclear"),
+        (GAS, "Gas"),
+        (OTHER_MEAN, "Other")
+    ]
+
+    NTPC = "NTPC"
+    NHPC = "NHPC"
+    NPCIL = "NPCIL"
+    IPGPCL = "IPGPCL"
+    SEI = "SEI"
+
+    PLANT_UTILITY_CHOICES = [
+        (NTPC, "NTPC"),
+        (NHPC, "NHPC"),
+        (NPCIL, "NPCIL"),
+        (IPGPCL, "IPGPCL"),
+        (SEI, "SEI Solar Energy Pvt. Ltd.")
+    ]
+
+    THERMAL = "TRL"
+    HYDRO = "HDR"
+    PV = "PV"
+
+    PLANT_TYPE_CHOICES = [
+        (THERMAL, "Thermal"),
+        (HYDRO, "Hydro"),
+        (PV, "PV")
+    ]
+
+    LOCAL = "local"
+    BULK = "bulk"
+
+    GENERATION_TYPE_CHOICES = [
+        (LOCAL, "Local"),
+        (BULK, "Bulk")
+    ]
+
+    project = models.ForeignKey(Project, related_name=_("project_plant"))
+    plant_name = models.CharField(_("Plant Name"), max_length=50, blank=True, null=True)
+    fuel_type = models.CharField(_("Fuel Type"), max_length=20, choices=FUEL_TYPE_CHOICES, default=OTHER_MEAN)
+    sei_value = models.CharField(_("SEI Value"), max_length=10, default=0)
+    utility = models.CharField(_("Plant Utility"), max_length=10, choices=PLANT_UTILITY_CHOICES)
+    type = models.CharField(_("Plant Type"), max_length=10, choices=PLANT_TYPE_CHOICES)
+    state = models.CharField(_("Plant State"), max_length=30)
+    country = models.CharField(_("Plant Country"), max_length=30)
+    electricity_delivered = models.CharField(_("Electricity Delivered to Project"), max_length=10, default=0)
+    generation_type = models.CharField(_("Type of Generation"), max_length=10, choices=GENERATION_TYPE_CHOICES)
+    thermal_energy = models.CharField(_("Recovered Thermal Energy"), max_length=15)
+    delete = models.BooleanField(_("Delete"), default=True)
+
+    objects = ProjectPlantManager()
 
     class Meta:
-        verbose_name = _("ProjectPlantMapping")
-        verbose_name_plural = _("ProjectPlantMappings")
+        verbose_name = _("ElectricityPlant")
+        verbose_name_plural = _("ElectricityPlants")
         app_label = "projects"
 
     def __unicode__(self):
-        return "%s" % (self.project.name)
+        return "%s" % (self.plant_name)
+
+
+class ProjectPlantUnit(models.Model):
+    """
+    electricity plant's unit capacity and date
+    """
+    plant = models.ForeignKey(ProjectPlant, related_name=_("project_plant_unit"))
+    unit_no = models.IntegerField(_("Plant Unit No."))
+    capacity = models.CharField(_("Plant Unit capacity"), max_length=10)
+    commissioning = models.DateTimeField(_("Plant Commissioning Date"), blank=True, null=True)
+
+    objects = ProjectPlantUnitManager()
+
+    class Meta:
+        verbose_name = _("ElectricityPlantUnit")
+        verbose_name_plural = _("ElectricityPlantUnits")
+        app_label = "projects"
+
+    def __unicode__(self):
+        return "%s:%s" % (self.plant.plant_name) % str(self.unit_no)
 
 
 class CreditsKeyword(models.Model):

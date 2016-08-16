@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^credit/(?P<credit_pk>\d+)/strategy/$', apis.StrategyApi.as_view(), name="api_credits_strategy"),
     url(r'^strategy/(?P<strategy_pk>\d+)/questions/$', apis.StrategyQuestionApi.as_view(), name="api_strategy_questions"),
     url(r'^(?P<project_pk>\d+)/strategy/(?P<strategy_unique>.*)/$', apis.ProjectStrategyApi.as_view(), name="api_project_question"),
+    url(r'^(?P<project_pk>\d+)/plant/$', apis.ProjectPlantApi.as_view(), name="api_project_plant"),
+    url(r'^electricity/plants/$', apis.ElectricityPlantList.as_view(), name="api_electricity_plant"),
 ]

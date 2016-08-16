@@ -5,7 +5,7 @@ from rest_framework import serializers
 
 from .models import (
     Project, ProjectStrategy, StrategyQuestion, CreditsAchieved, Strategy,
-    ProjectSpecificInfo)
+    ProjectSpecificInfo, ProjectPlant, ElectricityPlant)
 from accounts.serializers import ProfileMiniSerializer
 
 
@@ -168,3 +168,28 @@ class ProjectStrategySerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectStrategy
         read_only_fields = ('project', 'strategy', 'submitted_by')
+
+
+class ProjectPlantSerializer(serializers.ModelSerializer):
+    """
+    serializer for project plant
+    """
+    project = ProjectMiniSerializer(read_only=True)
+
+    def validate(self, attrs):
+        view = self.context.get('view')
+        project = get_object_or_404(Project, pk=view.kwargs[view.lookup_url_kwargs])
+        attrs['project'] = project
+        return attrs
+
+    class Meta:
+        model = ProjectPlant
+        exclude = ('delete', )
+
+
+class ElectricityPlantSerializer(serializers.ModelSerializer):
+    """
+    electricity plant serializer
+    """
+    class Meta:
+        model = ElectricityPlant
