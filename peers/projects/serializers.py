@@ -121,7 +121,9 @@ class ProjectSpecificDetailSerializer(serializers.ModelSerializer):
             'chp_elec_capacity', 'high_efficiency_gas_elec_capacity', 'local_other_gas_elec_capacity',
             'wind_solar_pv_elec_capacity', 'biomass_elec_capacity', 'geothermal_elec_capacity',
             'other_local_elec_capacity', 'electricity_unit', 'thermal_unit', 'currency',
-            'frequency_range', 'customer_served')
+            'frequency_range', 'customer_served', 'sei', 'payment_option', 'bulk_coal',
+            'bulk_petroleum', 'bulk_simple_gas', 'bulk_high_eff_gas', 'bulk_hydro', 'bulk_nuclear',
+            'bulk_solar_pv_wind')
 
 
 class CreditsAchievedSerializer(serializers.ModelSerializer):
