@@ -598,8 +598,8 @@ class ProjectPlant(models.Model):
     objects = ProjectPlantManager()
 
     class Meta:
-        verbose_name = _("ElectricityPlant")
-        verbose_name_plural = _("ElectricityPlants")
+        verbose_name = _("ProjectPlant")
+        verbose_name_plural = _("ProjectPlants")
         app_label = "projects"
 
     def __unicode__(self):
@@ -618,8 +618,8 @@ class ProjectPlantUnit(models.Model):
     objects = ProjectPlantUnitManager()
 
     class Meta:
-        verbose_name = _("ElectricityPlantUnit")
-        verbose_name_plural = _("ElectricityPlantUnits")
+        verbose_name = _("ProjectPlantUnit")
+        verbose_name_plural = _("ProjectPlantUnits")
         app_label = "projects"
 
     def __unicode__(self):
