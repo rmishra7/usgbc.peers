@@ -83,7 +83,7 @@ class ProjectSpecificInfo(models.Model):
     MEGA_WATT_HOURS = "MWh"
     MILLION_UNITS = "MUs"
     KILO_WATT_HOURS = "kWh"
-    BRITISH_THERMAL_UNIT = "BTU"
+    BRITISH_THERMAL_UNIT = "MmBTU"
     CALORIES = "cal"
     JOULES = "joules"
     MEGA_WATTS = "MW"
@@ -119,7 +119,7 @@ class ProjectSpecificInfo(models.Model):
     ]
 
     project = models.ForeignKey(Project, related_name=_("project_specific"))
-    sei = models.DecimalField(_("Project SEI value"), max_digits=8, decimal_places=2, blank=True, null=True)
+    project_sei = models.DecimalField(_("Project SEI value"), max_digits=8, decimal_places=2, blank=True, null=True)
     frequency_range = models.CharField(_("Interruption Frequency Range"), max_length=5, choices=INTERRUPTION_FREQUENCY_RANGE, blank=True, null=True)
     customer_served = models.DecimalField(_("Customer Served with Advance Meter"), max_digits=3, decimal_places=1, blank=True, null=True)
     res_customer = models.IntegerField(_("No of Residential Customer"), blank=True, null=True)
@@ -495,7 +495,7 @@ class ElectricityPlant(models.Model):
     type = models.CharField(_("Plant Type"), max_length=10, choices=PLANT_TYPE_CHOICES)
     state = models.CharField(_("Plant State"), max_length=30)
     country = models.CharField(_("Plant Country"), max_length=30)
-    delete = models.BooleanField(_("Delete"), default=True)
+    delete = models.BooleanField(_("Delete"), default=False)
 
     objects = ProjectElectricityPlantManager()
 
@@ -534,19 +534,19 @@ class ProjectPlant(models.Model):
     """
     COAL = "coal"
     NUCLEAR = "nuclear"
-    GAS = "cas"
-    PETROLEUM = "Petroleum"
-    SIMPLE_GAS = "simple gas"
+    GAS = "gas"
+    PETROLEUM = "petroleum"
+    SIMPLE_GAS = "simple-gas"
     WIND = "wind"
-    (PETROLEUM, "Petroleum"),
-    (SIMPLE_GAS, "Simple Gas"),
-    (WIND, "Wind"),
-    OTHER_MEAN = "other mean"
+    OTHER_MEAN = "other-mean"
 
     FUEL_TYPE_CHOICES = [
         (COAL, "Coal"),
         (NUCLEAR, "Nuclear"),
         (GAS, "Gas"),
+        (PETROLEUM, "Petroleum"),
+        (SIMPLE_GAS, "Simple Gas"),
+        (WIND, "Wind"),
         (OTHER_MEAN, "Other")
     ]
 
@@ -593,7 +593,7 @@ class ProjectPlant(models.Model):
     electricity_delivered = models.CharField(_("Electricity Delivered to Project"), max_length=10, default=0)
     generation_type = models.CharField(_("Type of Generation"), max_length=10, choices=GENERATION_TYPE_CHOICES)
     thermal_energy = models.CharField(_("Recovered Thermal Energy"), max_length=15)
-    delete = models.BooleanField(_("Delete"), default=True)
+    delete = models.BooleanField(_("Delete"), default=False)
 
     objects = ProjectPlantManager()
 

@@ -89,14 +89,14 @@ class ProjectSpecificDetailSerializer(serializers.ModelSerializer):
         view = self.context.get('view')
         project = get_object_or_404(Project, pk=view.kwargs[view.lookup_url_kwargs])
         attrs['project'] = project
-        turbine_elec = attrs.get('turbine_elec') if attrs.get('turbine_elec') is not None else 0
-        chp_elec = attrs.get('chp_elec') if attrs.get('chp_elec') is not None else 0
-        high_efficiency_gas_elec = attrs.get('high_efficiency_gas_elec') if attrs.get('high_efficiency_gas_elec') is not None else 0
-        local_other_gas_elec = attrs.get('local_other_gas_elec') if attrs.get('local_other_gas_elec') is not None else 0
-        wind_solar_pv_elec = attrs.get('wind_solar_pv_elec') if attrs.get('wind_solar_pv_elec') is not None else 0
-        biomass_elec = attrs.get('biomass_elec') if attrs.get('biomass_elec') is not None else 0
-        geothermal_elec = attrs.get('geothermal_elec') if attrs.get('geothermal_elec') is not None else 0
-        other_local_elec = attrs.get('other_local_elec') if attrs.get('other_local_elec') is not None else 0
+        turbine_elec = attrs.get('turbine_elec') if attrs.get('turbine_elec') is not None else project.project_specific.get().turbine_elec
+        chp_elec = attrs.get('chp_elec') if attrs.get('chp_elec') is not None else project.project_specific.get().chp_elec
+        high_efficiency_gas_elec = attrs.get('high_efficiency_gas_elec') if attrs.get('high_efficiency_gas_elec') is not None else project.project_specific.get().high_efficiency_gas_elec
+        local_other_gas_elec = attrs.get('local_other_gas_elec') if attrs.get('local_other_gas_elec') is not None else project.project_specific.get().local_other_gas_elec
+        wind_solar_pv_elec = attrs.get('wind_solar_pv_elec') if attrs.get('wind_solar_pv_elec') is not None else project.project_specific.get().wind_solar_pv_elec
+        biomass_elec = attrs.get('biomass_elec') if attrs.get('biomass_elec') is not None else project.project_specific.get().biomass_elec
+        geothermal_elec = attrs.get('geothermal_elec') if attrs.get('geothermal_elec') is not None else project.project_specific.get().geothermal_elec
+        other_local_elec = attrs.get('other_local_elec') if attrs.get('other_local_elec') is not None else project.project_specific.get().other_local_elec
         total = turbine_elec + chp_elec + high_efficiency_gas_elec + local_other_gas_elec + wind_solar_pv_elec + biomass_elec + geothermal_elec + other_local_elec
         if total == 0:
             total = 1
@@ -121,7 +121,7 @@ class ProjectSpecificDetailSerializer(serializers.ModelSerializer):
             'chp_elec_capacity', 'high_efficiency_gas_elec_capacity', 'local_other_gas_elec_capacity',
             'wind_solar_pv_elec_capacity', 'biomass_elec_capacity', 'geothermal_elec_capacity',
             'other_local_elec_capacity', 'electricity_unit', 'thermal_unit', 'currency',
-            'frequency_range', 'customer_served', 'sei', 'payment_option', 'bulk_coal',
+            'frequency_range', 'customer_served', 'project_sei', 'payment_option', 'bulk_coal',
             'bulk_petroleum', 'bulk_simple_gas', 'bulk_high_eff_gas', 'bulk_hydro', 'bulk_nuclear',
             'bulk_solar_pv_wind')
 
