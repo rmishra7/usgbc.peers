@@ -187,6 +187,7 @@ class ProjectPlantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProjectPlant
+        read_only_fields = ('country', )
         exclude = ('delete', )
 
 
