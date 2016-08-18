@@ -7,6 +7,7 @@ from .models import (
     Project, ProjectStrategy, StrategyQuestion, CreditsAchieved, Strategy,
     ProjectSpecificInfo, ProjectPlant, ElectricityPlant)
 from accounts.serializers import ProfileMiniSerializer
+from .constants import national_sei
 
 
 class ProjectMiniSerializer(serializers.ModelSerializer):
@@ -183,11 +184,12 @@ class ProjectPlantSerializer(serializers.ModelSerializer):
         project = get_object_or_404(Project, pk=view.kwargs[view.lookup_url_kwargs])
         attrs['project'] = project
         attrs['country'] = project.country
+        attrs['sei_value'] = national_sei[project.country][attrs['fuel_type']]
         return attrs
 
     class Meta:
         model = ProjectPlant
-        read_only_fields = ('country', )
+        read_only_fields = ('country', 'sei_value')
         exclude = ('delete', )
 
 
