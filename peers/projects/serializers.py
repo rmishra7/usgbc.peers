@@ -84,7 +84,7 @@ class ProjectSpecificDetailSerializer(serializers.ModelSerializer):
     """
     serializer for project specific apis
     """
-    project = ProjectSerializer(read_only=True)
+    project = ProjectMiniSerializer(read_only=True)
 
     def validate(self, attrs):
         view = self.context.get('view')
@@ -94,37 +94,25 @@ class ProjectSpecificDetailSerializer(serializers.ModelSerializer):
         chp_elec = attrs.get('chp_elec') if attrs.get('chp_elec') is not None else project.project_specific.get().chp_elec
         high_efficiency_gas_elec = attrs.get('high_efficiency_gas_elec') if attrs.get('high_efficiency_gas_elec') is not None else project.project_specific.get().high_efficiency_gas_elec
         local_other_gas_elec = attrs.get('local_other_gas_elec') if attrs.get('local_other_gas_elec') is not None else project.project_specific.get().local_other_gas_elec
-        wind_solar_pv_elec = attrs.get('wind_solar_pv_elec') if attrs.get('wind_solar_pv_elec') is not None else project.project_specific.get().wind_solar_pv_elec
+        wind_elec = attrs.get('wind_elec') if attrs.get('wind_elec') is not None else project.project_specific.get().wind_elec
+        solar_pv_elec = attrs.get('solar_pv_elec') if attrs.get('solar_pv_elec') is not None else project.project_specific.get().solar_pv_elec
         biomass_elec = attrs.get('biomass_elec') if attrs.get('biomass_elec') is not None else project.project_specific.get().biomass_elec
         geothermal_elec = attrs.get('geothermal_elec') if attrs.get('geothermal_elec') is not None else project.project_specific.get().geothermal_elec
-        other_local_elec = attrs.get('other_local_elec') if attrs.get('other_local_elec') is not None else project.project_specific.get().other_local_elec
-        total = turbine_elec + chp_elec + high_efficiency_gas_elec + local_other_gas_elec + wind_solar_pv_elec + biomass_elec + geothermal_elec + other_local_elec
+        total = turbine_elec + chp_elec + high_efficiency_gas_elec + local_other_gas_elec + wind_elec + solar_pv_elec + biomass_elec + geothermal_elec
         if total == 0:
             total = 1
         attrs['turbine_elec'] = (turbine_elec/total)*100
         attrs['chp_elec'] = (chp_elec/total)*100
         attrs['high_efficiency_gas_elec'] = (high_efficiency_gas_elec/total)*100
         attrs['local_other_gas_elec'] = (local_other_gas_elec/total)*100
-        attrs['wind_solar_pv_elec'] = (wind_solar_pv_elec/total)*100
+        attrs['wind_elec'] = (wind_elec/total)*100
+        attrs['solar_pv_elec'] = (solar_pv_elec/total)*100
         attrs['biomass_elec'] = (biomass_elec/total)*100
         attrs['geothermal_elec'] = (geothermal_elec/total)*100
-        attrs['other_local_elec'] = (other_local_elec/total)*100
         return attrs
 
     class Meta:
         model = ProjectSpecificInfo
-        fields = (
-            'project', 'res_customer', 'comm_industrial1', 'comm_industrial2', 'annual_customer_load',
-            'customer_hr_peak_demand', 'annual_purchased_elec', 'purchased_hr_peak_demand',
-            'tnd_losses', 'tot_local_elec_generation', 'turbine_elec', 'chp_elec', 'high_efficiency_gas_elec',
-            'local_other_gas_elec', 'wind_solar_pv_elec', 'biomass_elec', 'geothermal_elec',
-            'other_local_elec', 'tot_local_generation_capacity', 'turbine_elec_capacity',
-            'chp_elec_capacity', 'high_efficiency_gas_elec_capacity', 'local_other_gas_elec_capacity',
-            'wind_solar_pv_elec_capacity', 'biomass_elec_capacity', 'geothermal_elec_capacity',
-            'other_local_elec_capacity', 'electricity_unit', 'thermal_unit', 'currency',
-            'frequency_range', 'customer_served', 'project_sei', 'payment_option', 'bulk_coal',
-            'bulk_petroleum', 'bulk_simple_gas', 'bulk_high_eff_gas', 'bulk_hydro', 'bulk_nuclear',
-            'bulk_solar_pv_wind')
 
 
 class CreditsAchievedSerializer(serializers.ModelSerializer):
