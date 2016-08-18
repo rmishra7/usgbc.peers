@@ -585,10 +585,10 @@ class ProjectPlant(models.Model):
 
     project = models.ForeignKey(Project, related_name=_("project_plant"))
     plant_name = models.CharField(_("Plant Name"), max_length=50, blank=True, null=True)
-    fuel_type = models.CharField(_("Fuel Type"), max_length=20, blank=True, null=True, choices=FUEL_TYPE_CHOICES, default=OTHER_MEAN)
+    fuel_type = models.CharField(_("Fuel Type"), max_length=20, choices=FUEL_TYPE_CHOICES, default=OTHER_MEAN)
     sei_value = models.DecimalField(_("SEI Value"), max_digits=10, decimal_places=2, default=0)
     utility = models.CharField(_("Plant Utility"), max_length=10, choices=PLANT_UTILITY_CHOICES)
-    type = models.CharField(_("Plant Type"), max_length=10, choices=PLANT_TYPE_CHOICES)
+    type = models.CharField(_("Plant Type"), max_length=10, blank=True, null=True, choices=PLANT_TYPE_CHOICES)
     state = models.CharField(_("Plant State"), max_length=30)
     country = models.CharField(_("Plant Country"), max_length=30)
     electricity_delivered = models.CharField(_("Electricity Delivered to Project"), max_length=10, default=0)

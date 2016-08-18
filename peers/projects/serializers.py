@@ -182,7 +182,7 @@ class ProjectPlantSerializer(serializers.ModelSerializer):
         view = self.context.get('view')
         project = get_object_or_404(Project, pk=view.kwargs[view.lookup_url_kwargs])
         attrs['project'] = project
-        project['country'] = project.country
+        attrs['country'] = project.country
         return attrs
 
     class Meta:
