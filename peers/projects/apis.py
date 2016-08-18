@@ -239,9 +239,10 @@ class ProjectSEI(generics.GenericAPIView):
     api to calculate sei value
     """
     lookup_url_kwargs = "project_pk"
+    queryset = ""
 
     def get(self, request, *args, **kwargs):
-        project = Project.objects.get(pk=self.kwargs[self.lookup_url_kwargs])
+        project = get_object_or_404(Project, pk=self.kwargs[self.lookup_url_kwargs])
         project_info = project.project_specific.get()
         tnd = 1 + (project_info.tnd_losses/100)
         value = 0
