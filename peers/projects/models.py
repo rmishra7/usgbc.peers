@@ -119,7 +119,7 @@ class ProjectSpecificInfo(models.Model):
     ]
 
     project = models.ForeignKey(Project, related_name=_("project_specific"))
-    project_sei = models.DecimalField(_("Project SEI value"), max_digits=8, decimal_places=2, blank=True, null=True)
+    project_sei = models.DecimalField(_("Project SEI value"), max_digits=12, decimal_places=2, blank=True, null=True)
     projecr_score = models.IntegerField(_("Project Score"), blank=True, null=True)
     frequency_range = models.CharField(_("Interruption Frequency Range"), max_length=5, choices=INTERRUPTION_FREQUENCY_RANGE, blank=True, null=True)
     customer_served = models.DecimalField(_("Customer Served with Advance Meter"), max_digits=3, decimal_places=1, blank=True, null=True)

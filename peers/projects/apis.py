@@ -1,9 +1,11 @@
 
 from django.shortcuts import get_object_or_404
+from django.db.models import Sum
 
-from rest_framework import generics, status, response, permissions
+from rest_framework import generics, status, response, permissions, serializers
 import uuid
 
+from .constants import national_sei
 from .models import (
     Project, ProjectStrategy, CreditsAchieved, Strategy, StrategyQuestion,
     ProjectSpecificInfo, ProjectPlant, ElectricityPlant)
@@ -230,3 +232,82 @@ class ElectricityPlantList(generics.ListAPIView):
         if not kwargs:
             return self.queryset
         return self.queryset.filter(**kwargs)
+
+
+class ProjectSEI(generics.GenericAPIView):
+    """
+    api to calculate sei value
+    """
+    lookup_url_kwargs = "project_pk"
+
+    def get(self, request, *args, **kwargs):
+        project = Project.objects.get(pk=self.kwargs[self.lookup_url_kwargs])
+        project_info = project.project_specific.get()
+        tnd = 1 + (project_info.tnd_losses/100)
+        value = 0
+        if project.project_specific.get().payment_option == "scr":
+            if project_info.bulk_coal != 0.00:
+                sei_c = national_sei[project.country]["bulk_coal"] * float(project_info.bulk_coal)
+                value = value + sei_c
+            if project_info.bulk_petroleum != 0.00:
+                sei_p = national_sei[project.country]["bulk_petroleum"] * float(project_info.bulk_petroleum)
+                value = value + sei_p
+            if project_info.bulk_simple_gas != 0.00:
+                sei_p = national_sei[project.country]["bulk_simple_gas"] * float(project_info.bulk_simple_gas)
+                value = value + sei_p
+            if project_info.bulk_high_eff_gas != 0.00:
+                sei_p = national_sei[project.country]["bulk_high_eff_gas"] * float(project_info.bulk_high_eff_gas)
+                value = value + sei_p
+            if project_info.bulk_nuclear != 0.00:
+                sei_p = national_sei[project.country]["bulk_nuclear"] * float(project_info.bulk_nuclear)
+                value = value + sei_p
+            if project_info.chp_elec != 0.00:
+                sei_p = national_sei[project.country]["chp_elec"] * float(project_info.chp_elec)
+                value = value + sei_p
+            if project_info.high_efficiency_gas_elec != 0.00:
+                sei_p = national_sei[project.country]["high_efficiency_gas_elec"] * float(project_info.high_efficiency_gas_elec)
+                value = (value/100) + sei_p
+            sei = value * float(tnd)
+        elif project.project_specific.get().payment_option == "ppp":
+            plant = ProjectPlant.objects.filter(project=project)
+            thermal = plant.aggregate(Sum('thermal_energy'))
+            local_elec = 0
+            for p in plant:
+                elec = int(p.sei_value)*int(p.electricity_delivered)
+                local_elec = local_elec + elec
+            local_energy_consumed = local_elec
+            bulk_energy_consumed = float(local_elec)*float(tnd)
+            tot_energy = local_energy_consumed + bulk_energy_consumed
+            sei = (float(tot_energy) - float(thermal['thermal_energy__sum']))/float(project_info.annual_customer_load)
+        else:
+            raise serializers.ValidationError("No Payment Option is provided for project.")
+        project_info.project_sei = sei
+        project_info.save()
+        response_data = {
+            'sei_cert': project_info.project_sei
+        }
+        return response.Response(response_data, status=status.HTTP_200_OK)
+
+
+class ProjectScore(generics.GenericAPIView):
+    """
+    api to calculate score of project
+    """
+    lookup_url_kwargs = "project_pk"
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, pk=self.kwargs[self.lookup_url_kwargs])
+        project_info = project.project_specific.get()
+        if project_info.project_sei <= 5:
+            project_score = 50
+        elif 5 < project_info.project_sei <= 12.5:
+            print "insdide this"
+            project_score = 50 - (20/3) * (float(project_info.project_sei) - 5)
+        else:
+            project_score = 0
+        project_info.project_score = project_score
+        project_info.save()
+        response_data = {
+            "score": project_score
+        }
+        return response.Response(response_data, status=status.HTTP_200_OK)
