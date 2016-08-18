@@ -284,7 +284,7 @@ class ProjectSEI(generics.GenericAPIView):
         project_info.project_sei = sei
         project_info.save()
         response_data = {
-            'sei_cert': project_info.project_sei
+            'sei': sei
         }
         return response.Response(response_data, status=status.HTTP_200_OK)
 
