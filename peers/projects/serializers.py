@@ -90,25 +90,6 @@ class ProjectSpecificDetailSerializer(serializers.ModelSerializer):
         view = self.context.get('view')
         project = get_object_or_404(Project, pk=view.kwargs[view.lookup_url_kwargs])
         attrs['project'] = project
-        turbine_elec = attrs.get('turbine_elec') if attrs.get('turbine_elec') is not None else project.project_specific.get().turbine_elec
-        chp_elec = attrs.get('chp_elec') if attrs.get('chp_elec') is not None else project.project_specific.get().chp_elec
-        high_efficiency_gas_elec = attrs.get('high_efficiency_gas_elec') if attrs.get('high_efficiency_gas_elec') is not None else project.project_specific.get().high_efficiency_gas_elec
-        local_other_gas_elec = attrs.get('local_other_gas_elec') if attrs.get('local_other_gas_elec') is not None else project.project_specific.get().local_other_gas_elec
-        wind_elec = attrs.get('wind_elec') if attrs.get('wind_elec') is not None else project.project_specific.get().wind_elec
-        solar_pv_elec = attrs.get('solar_pv_elec') if attrs.get('solar_pv_elec') is not None else project.project_specific.get().solar_pv_elec
-        biomass_elec = attrs.get('biomass_elec') if attrs.get('biomass_elec') is not None else project.project_specific.get().biomass_elec
-        geothermal_elec = attrs.get('geothermal_elec') if attrs.get('geothermal_elec') is not None else project.project_specific.get().geothermal_elec
-        total = turbine_elec + chp_elec + high_efficiency_gas_elec + local_other_gas_elec + wind_elec + solar_pv_elec + biomass_elec + geothermal_elec
-        if total == 0:
-            total = 1
-        attrs['turbine_elec'] = (turbine_elec/total)*100
-        attrs['chp_elec'] = (chp_elec/total)*100
-        attrs['high_efficiency_gas_elec'] = (high_efficiency_gas_elec/total)*100
-        attrs['local_other_gas_elec'] = (local_other_gas_elec/total)*100
-        attrs['wind_elec'] = (wind_elec/total)*100
-        attrs['solar_pv_elec'] = (solar_pv_elec/total)*100
-        attrs['biomass_elec'] = (biomass_elec/total)*100
-        attrs['geothermal_elec'] = (geothermal_elec/total)*100
         return attrs
 
     class Meta:
