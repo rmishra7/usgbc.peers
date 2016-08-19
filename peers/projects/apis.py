@@ -254,21 +254,21 @@ class ProjectSEI(generics.GenericAPIView):
                 sei_p = national_sei[project.country]["petroleum"] * float(project_info.bulk_petroleum)
                 value = value + sei_p
             if project_info.bulk_simple_gas != 0:
-                sei_p = national_sei[project.country]["simple-gas"] * float(project_info.bulk_simple_gas)
-                value = value + sei_p
+                sei_sg = national_sei[project.country]["simple-gas"] * float(project_info.bulk_simple_gas)
+                value = value + sei_sg
             if project_info.bulk_high_eff_gas != 0:
-                sei_p = national_sei[project.country]["gas"] * float(project_info.bulk_high_eff_gas)
-                value = value + sei_p
+                sei_bhg = national_sei[project.country]["gas"] * float(project_info.bulk_high_eff_gas)
+                value = value + sei_bhg
             if project_info.bulk_nuclear != 0:
-                sei_p = national_sei[project.country]["nuclear"] * float(project_info.bulk_nuclear)
-                value = value + sei_p
+                sei_n = national_sei[project.country]["nuclear"] * float(project_info.bulk_nuclear)
+                value = value + sei_n
             if project_info.chp_elec != 0:
-                sei_p = national_sei[project.country]["chp-gas"] * float(project_info.chp_elec)
-                value = value + sei_p
+                sei_cg = national_sei[project.country]["chp-gas"] * float(project_info.chp_elec)
+                value = value + sei_cg
             if project_info.high_efficiency_gas_elec != 0:
-                sei_p = national_sei[project.country]["gas"] * float(project_info.high_efficiency_gas_elec)
-                value = (value/100) + sei_p
-            sei = value * float(tnd)
+                sei_hg = national_sei[project.country]["gas"] * float(project_info.high_efficiency_gas_elec)
+                value = value + sei_hg
+            sei = (value/(project_info.tot_local_elec_generation + project_info.annual_purchased_elec)) * float(tnd)
         elif project.project_specific.get().payment_option == "ppp":
             plant = ProjectPlant.objects.filter(project=project)
             thermal = plant.aggregate(Sum('thermal_energy'))
