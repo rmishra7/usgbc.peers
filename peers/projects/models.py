@@ -154,6 +154,7 @@ class ProjectSpecificInfo(models.Model):
     wind_elec = models.IntegerField(_("Wind Solar PV Electricity Generation"), blank=True, default=0)
     solar_pv_elec = models.IntegerField(_("Wind Solar PV Electricity Generation"), blank=True, default=0)
     biomass_elec = models.IntegerField(_("Biomass Electricity Generation"), blank=True, default=0)
+    hydro_elec = models.IntegerField(_("Hydro Electricity Generation"), blank=True, default=0)
     geothermal_elec = models.IntegerField(_("Geothermal Electricity Generation"), blank=True, default=0)
     other_local_elec = models.IntegerField(_("Other Renewable Electricity Generation"), blank=True, default=0)
 
