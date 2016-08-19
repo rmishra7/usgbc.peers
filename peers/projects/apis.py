@@ -262,6 +262,9 @@ class ProjectSEI(generics.GenericAPIView):
             if project_info.bulk_nuclear != 0:
                 sei_p = national_sei[project.country]["nuclear"] * float(project_info.bulk_nuclear)
                 value = value + sei_p
+            if project_info.chp_elec != 0:
+                sei_p = national_sei[project.country]["chp-gas"] * float(project_info.chp_elec)
+                value = value + sei_p
             if project_info.high_efficiency_gas_elec != 0:
                 sei_p = national_sei[project.country]["gas"] * float(project_info.high_efficiency_gas_elec)
                 value = (value/100) + sei_p
