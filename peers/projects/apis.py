@@ -1,4 +1,4 @@
-
+from __future__ import division
 from django.shortcuts import get_object_or_404
 from django.db.models import Sum
 
@@ -242,9 +242,10 @@ class ProjectSEI(generics.GenericAPIView):
     queryset = ""
 
     def get(self, request, *args, **kwargs):
+        print "#########################################"
         project = get_object_or_404(Project, pk=self.kwargs[self.lookup_url_kwargs])
         project_info = project.project_specific.get()
-        tnd = 1 + (project_info.tnd_losses/100)
+        tnd = 1 + float(project_info.tnd_losses/100)
         value = 0
         if project.project_specific.get().payment_option == "scr":
             if project_info.bulk_coal != 0:
