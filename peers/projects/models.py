@@ -145,6 +145,7 @@ class ProjectSpecificInfo(models.Model):
     purchased_hr_unit = models.CharField(_("Purchased Peak Demand Unit"), max_length=10, default=MEGA_WATTS)
     tnd_losses = models.IntegerField(_("T&D Losses"), blank=True, null=True)
     payment_option = models.CharField(_("Payment Option"), max_length=3, choices=PAYMENT_OPTION_CHOICES, blank=True, null=True)
+    annual_fuel_cost = models.IntegerField(_("Annual Fuel Cost"), default=0)
 
     tot_local_elec_generation = models.IntegerField(_("Total Local Electricity Generation"), blank=True, null=True)
     turbine_elec = models.IntegerField(_("Local Turbine Electricity Generation"), blank=True, default=0)
