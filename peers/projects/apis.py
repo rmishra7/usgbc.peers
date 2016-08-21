@@ -242,7 +242,6 @@ class ProjectSEI(generics.GenericAPIView):
     queryset = ""
 
     def get(self, request, *args, **kwargs):
-        print "#########################################"
         project = get_object_or_404(Project, pk=self.kwargs[self.lookup_url_kwargs])
         project_info = project.project_specific.get()
         tnd = 1 + float(project_info.tnd_losses/100)
@@ -273,14 +272,11 @@ class ProjectSEI(generics.GenericAPIView):
         elif project.project_specific.get().payment_option == "ppp":
             plant = ProjectPlant.objects.filter(project=project)
             thermal = plant.aggregate(Sum('thermal_energy'))
-            local_elec = 0
+            tot_energy = 0
             for p in plant:
-                elec = int(p.sei_value)*int(p.electricity_delivered)
-                local_elec = local_elec + elec
-            local_energy_consumed = local_elec
-            bulk_energy_consumed = float(local_elec)*float(tnd)
-            tot_energy = local_energy_consumed + bulk_energy_consumed
-            sei = (float(tot_energy) - float(thermal['thermal_energy__sum']))/float(project_info.annual_customer_load)
+                elec = float(p.sei_value)*float(p.electricity_delivered)
+                tot_energy = tot_energy + elec
+            sei = (float(tot_energy) - float(thermal['thermal_energy__sum']))/float(project_info.tot_local_elec_generation + project_info.annual_purchased_elec)
         else:
             raise serializers.ValidationError("No Payment Option is provided for project.")
         project_info.project_sei = sei

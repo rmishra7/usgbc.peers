@@ -165,9 +165,11 @@ class ProjectPlantSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         view = self.context.get('view')
         project = get_object_or_404(Project, pk=view.kwargs[view.lookup_url_kwargs])
+        plant = get_object_or_404(ElectricityPlant, pk=attrs['plant_name'])
+        attrs['plant_name'] = plant.plant_name
         attrs['project'] = project
         attrs['country'] = project.country
-        attrs['sei_value'] = national_sei[project.country][attrs['fuel_type']]
+        attrs['sei_value'] = plant.sei_value
         return attrs
 
     class Meta:
