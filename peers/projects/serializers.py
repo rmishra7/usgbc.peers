@@ -90,6 +90,20 @@ class ProjectSpecificDetailSerializer(serializers.ModelSerializer):
         view = self.context.get('view')
         project = get_object_or_404(Project, pk=view.kwargs[view.lookup_url_kwargs])
         attrs['project'] = project
+        if 'bulk_coal' not in attrs:
+            attrs['bulk_coal'] = 0
+        if 'bulk_petroleum' not in attrs:
+            attrs['bulk_petroleum'] = 0
+        if 'bulk_simple_gas' not in attrs:
+            attrs['bulk_simple_gas'] = 0
+        if 'bulk_high_eff_gas' not in attrs:
+            attrs['bulk_high_eff_gas'] = 0
+        if 'bulk_hydro' not in attrs:
+            attrs['bulk_hydro'] = 0
+        if 'bulk_nuclear' not in attrs:
+            attrs['bulk_nuclear'] = 0
+        if 'bulk_solar_pv_wind' not in attrs:
+            attrs['bulk_solar_pv_wind'] = 0
         return attrs
 
     class Meta:
