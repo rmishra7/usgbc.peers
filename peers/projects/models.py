@@ -126,6 +126,16 @@ class ProjectSpecificInfo(models.Model):
         (PPP, "PEER Participation Package")
     ]
 
+    CUSTOMER_RANGE1 = "RANGE1"
+    CUSTOMER_RANGE2 = "RANGE2"
+    CUSTOMER_RANGE3 = "RANGE3"
+
+    ADVANCE_METER_CUSTOMER_RANGE = [
+        (CUSTOMER_RANGE1, "Less than 5%"),
+        (CUSTOMER_RANGE2, "Between 5% to 50%"),
+        (CUSTOMER_RANGE3, "50% or More"),
+    ]
+
     project = models.ForeignKey(Project, related_name=_("project_specific"))
     project_sei = models.FloatField(_("Project SEI value"), blank=True, null=True)
     project_score = models.IntegerField(_("Project Score"), blank=True, null=True)
@@ -146,13 +156,9 @@ class ProjectSpecificInfo(models.Model):
     tnd_losses = models.IntegerField(_("T&D Losses"), blank=True, null=True)
     payment_option = models.CharField(_("Payment Option"), max_length=3, choices=PAYMENT_OPTION_CHOICES, blank=True, null=True)
     annual_fuel_cost = models.IntegerField(_("Annual Fuel Cost"), default=0)
-    customer_meter_perc = models.CharField(_("Customer percentage Installed Advance Meter"), max_length=3, blank=True, null=True)
+    customer_meter_perc = models.CharField(_("Customer percentage Installed Advance Meter"), max_length=7, choices=ADVANCE_METER_CUSTOMER_RANGE, blank=True, null=True)
     current_customer_meter_perc = models.CharField(_("Customer percentage Installed Advance Meter"), max_length=3, blank=True, null=True)
     customer_served_meter_perc = models.CharField(_("Customer Served by Meter in last 4yrs"), max_length=3, blank=True, null=True)
-    all_customer_class = models.BooleanField(_("All Customer Classes"), default=False)
-    all_generator_type = models.BooleanField(_("All Generator Type"), default=False)
-    third_party_ownership = models.BooleanField(_("Thirdparty Ownership Generation"), default=False)
-    meter_aggregation = models.BooleanField(_("Meter Aggregation"), default=False)
 
     tot_local_elec_generation = models.IntegerField(_("Total Local Electricity Generation"), blank=True, null=True)
     turbine_elec = models.IntegerField(_("Local Turbine Electricity Generation"), blank=True, default=0)
