@@ -485,7 +485,6 @@ class ElectricityPlant(models.Model):
         (COAL, "Coal"),
         (NUCLEAR, "Nuclear"),
         (GAS, "Gas"),
-        (OTHER_MEAN, "Other")
         (PETROLEUM, "Petroleum"),
         (SIMPLE_GAS, "Simple Gas"),
         (WIND, "Wind"),
@@ -562,11 +561,11 @@ class ProjectPlant(models.Model):
     """
     COAL = "coal"
     NUCLEAR = "nuclear"
-    GAS = "gas"
-    PETROLEUM = "petroleum"
-    SIMPLE_GAS = "simple-gas"
+    GAS = "cas"
+    PETROLEUM = "Petroleum"
+    SIMPLE_GAS = "simple gas"
     WIND = "wind"
-    OTHER_MEAN = "other-mean"
+    OTHER_MEAN = "other"
 
     FUEL_TYPE_CHOICES = [
         (COAL, "Coal"),
