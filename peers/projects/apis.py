@@ -306,6 +306,8 @@ class ProjectScore(generics.GenericAPIView):
             project_score = 50 - (20/3) * (float(project_info.project_sei) - 5)
         else:
             project_score = 0
+        TWOPLACES = Decimal(10) ** -2
+        project_score = Decimal(project_score).quantize(TWOPLACES)
         project_info.project_score = project_score
         project_info.save()
         response_data = {
