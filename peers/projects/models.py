@@ -136,6 +136,14 @@ class ProjectSpecificInfo(models.Model):
         (CUSTOMER_RANGE3, "50% or More"),
     ]
 
+    DOLLAR = "USD"
+    RUPEE = "INR"
+
+    CURRENCY_CHOICES = [
+        (DOLLAR, "Dollar"),
+        (RUPEE, "Rupee")
+    ]
+
     project = models.ForeignKey(Project, related_name=_("project_specific"))
     project_sei = models.FloatField(_("Project SEI value"), blank=True, null=True)
     project_score = models.IntegerField(_("Project Score"), blank=True, null=True)
@@ -146,7 +154,7 @@ class ProjectSpecificInfo(models.Model):
     comm_industrial2 = models.IntegerField(_("No of large commercial and industrial customers"), blank=True, null=True)
     electricity_unit = models.CharField(_("Electricity Default Unit"), max_length=10, blank=True, null=True)
     thermal_unit = models.CharField(_("Thermal/Heat Energy Unit"), max_length=15, blank=True, null=True)
-    currency = models.CharField(_("Default Currency"), max_length=20, blank=True, null=True)
+    currency = models.CharField(_("Default Currency"), choices=CURRENCY_CHOICES, max_length=20, blank=True, null=True)
     annual_customer_load = models.IntegerField(_("Annual Customer Load"), blank=True, null=True)
     customer_hr_peak_demand = models.IntegerField(_("Customer Annual Hourly Peak Demand"), blank=True, null=True)
     peak_demand_unit = models.CharField(_("Peak Demand Unit"), max_length=10, default=MEGA_WATTS)
@@ -479,6 +487,7 @@ class ElectricityPlant(models.Model):
     PETROLEUM = "Petroleum"
     SIMPLE_GAS = "simple gas"
     WIND = "wind"
+    HYDRO = "hydro"
     OTHER_MEAN = "other"
 
     FUEL_TYPE_CHOICES = [
@@ -488,6 +497,7 @@ class ElectricityPlant(models.Model):
         (PETROLEUM, "Petroleum"),
         (SIMPLE_GAS, "Simple Gas"),
         (WIND, "Wind"),
+        (HYDRO, "Hydro"),
         (OTHER_MEAN, "Other")
     ]
 

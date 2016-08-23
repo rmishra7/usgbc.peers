@@ -4,6 +4,7 @@ from django.db.models import Sum
 
 from rest_framework import generics, status, response, permissions, serializers
 import uuid
+from decimal import Decimal
 
 from .constants import national_sei
 from .models import (
@@ -279,6 +280,8 @@ class ProjectSEI(generics.GenericAPIView):
             sei = (float(tot_energy) - float(thermal['thermal_energy__sum']))/float(project_info.tot_local_elec_generation + project_info.annual_purchased_elec)
         else:
             raise serializers.ValidationError("No Payment Option is provided for project.")
+        TWOPLACES = Decimal(10) ** -2
+        sei = Decimal(sei).quantize(TWOPLACES)
         project_info.project_sei = sei
         project_info.save()
         response_data = {
