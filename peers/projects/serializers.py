@@ -178,6 +178,18 @@ class ProjectPlantSerializer(serializers.ModelSerializer):
         exclude = ('delete', )
 
 
+class ProjectPlantDetailSerializer(serializers.ModelSerializer):
+    """
+    serializer for project plant
+    """
+    project = ProjectMiniSerializer(read_only=True)
+
+    class Meta:
+        model = ProjectPlant
+        read_only_fields = ('country', 'sei_value', 'plant_name')
+        exclude = ('delete', )
+
+
 class ElectricityPlantSerializer(serializers.ModelSerializer):
     """
     electricity plant serializer

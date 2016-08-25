@@ -13,7 +13,8 @@ from .models import (
 from .serializers import (
     ProjectSerializer, ProjectDetailSerializer, ProjectStrategySerializer,
     CreditsAchievedSerializer, StrategySerializer, StrategyQuestionSerializer,
-    ProjectSpecificDetailSerializer, ProjectPlantSerializer, ElectricityPlantSerializer
+    ProjectSpecificDetailSerializer, ProjectPlantSerializer, ElectricityPlantSerializer,
+    ProjectPlantDetailSerializer
     )
 # from .tasks import project_submission_listener, project_submission_success_listener
 
@@ -215,6 +216,46 @@ class ProjectPlantApi(generics.ListCreateAPIView):
         serializer.save()
 
 
+class ProjectPlantDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    to retrieve, update and delete project selected plant
+    """
+    model = ProjectPlant
+    page_size = 10
+    serializer_class = ProjectPlantDetailSerializer
+    permission_classes = [permissions.IsAuthenticated, ]
+    lookup_url_kwargs = "project_pk"
+    lookup_field = "plant_pk"
+
+    def get_object(self):
+        get_object_or_404(Project, pk=self.kwargs[self.lookup_url_kwargs])
+        instance = get_object_or_404(self.model, pk=self.kwargs[self.lookup_field])
+        return instance
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return response.Response(serializer.data, status=status.HTTP_200_OK)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return response.Response(serializer.data, status=status.HTTP_200_OK)
+
+    def perform_update(self, serializer):
+        serializer.save()
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return response.Response(status=status.HTTP_204_NO_CONTENT)
+
+    def perform_destroy(self, instance):
+        instance.delete()
+
+
 class ElectricityPlantList(generics.ListAPIView):
     """
     api to return list of electricity plants
@@ -302,7 +343,6 @@ class ProjectScore(generics.GenericAPIView):
         if project_info.project_sei <= 5:
             project_score = 50
         elif 5 < project_info.project_sei <= 12.5:
-            print "insdide this"
             project_score = 50 - (20/3) * (float(project_info.project_sei) - 5)
         else:
             project_score = 0
@@ -312,5 +352,32 @@ class ProjectScore(generics.GenericAPIView):
         project_info.save()
         response_data = {
             "score": project_score
+        }
+        return response.Response(response_data, status=status.HTTP_200_OK)
+
+
+class LREStrategyScore(generics.GenericAPIView):
+    """
+    lre score calculation
+    """
+    lookup_url_kwargs = "project_pk"
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, pk=self.kwargs[self.lookup_url_kwargs])
+        project_info = project.project_specific.get()
+        if project.project_type == Project.CITY or project.project_type == Project.CAMPUS:
+            if 0 < project_info.customer_elec_load_supplied <= 5:
+                lre_score = 1
+            else:
+                lre_score = 5
+        else:
+            if 0 < project_info.customer_elec_load_supplied <= 5:
+                lre_score = 1
+            else:
+                lre_score = 3
+        project_info.lre_score = lre_score
+        project_info.save()
+        response_data = {
+            'lre_score': lre_score
         }
         return response.Response(response_data, status=status.HTTP_200_OK)

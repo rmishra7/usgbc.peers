@@ -10,7 +10,10 @@ urlpatterns = [
     url(r'^strategy/(?P<strategy_pk>\d+)/questions/$', apis.StrategyQuestionApi.as_view(), name="api_strategy_questions"),
     url(r'^(?P<project_pk>\d+)/strategy/(?P<strategy_unique>.*)/$', apis.ProjectStrategyApi.as_view(), name="api_project_question"),
     url(r'^(?P<project_pk>\d+)/plant/$', apis.ProjectPlantApi.as_view(), name="api_project_plant"),
+    url(r'^(?P<project_pk>\d+)/plant/(?P<plant_pk>\d+)/$', apis.ProjectPlantDetail.as_view(), name="api_project_plant_update"),
     url(r'^(?P<project_pk>\d+)/sei/calculate/$', apis.ProjectSEI.as_view(), name="api_project_sei"),
     url(r'^(?P<project_pk>\d+)/score/calculate/$', apis.ProjectScore.as_view(), name="api_project_score"),
+    url(r'^(?P<project_pk>\d+)/lre/score/calculate/$', apis.LREStrategyScore.as_view(), name="api_lre_score"),
     url(r'^electricity/plants/$', apis.ElectricityPlantList.as_view(), name="api_electricity_plant"),
+
 ]

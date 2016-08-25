@@ -26,9 +26,9 @@ class Project(models.Model):
         (SCREENING, "Screening")
     ]
 
-    CITY = "city"
-    CAMPUS = "campus"
-    SUPPLY = "supply"
+    CITY = "City"
+    CAMPUS = "Campus"
+    SUPPLY = "Supply"
 
     PROJECT_TYPE_CHOICES = [
         (CITY, "City"),
@@ -147,6 +147,11 @@ class ProjectSpecificInfo(models.Model):
     project = models.ForeignKey(Project, related_name=_("project_specific"))
     project_sei = models.FloatField(_("Project SEI value"), blank=True, null=True)
     project_score = models.IntegerField(_("Project Score"), blank=True, null=True)
+    lre_score = models.IntegerField(_("LRE Strategy Score"), blank=True, null=True)
+    net_metering_score = models.IntegerField(_("Net Metering Score"), blank=True, null=True)
+    bulk_sei = models.FloatField(_("Bulk SEI value"), blank=True, null=True)
+    ees_value = models.FloatField(_("Electricity Efficiency Savings"), blank=True, null=True)
+    oe_credit_score = models.IntegerField(_("OE Credit Score"), blank=True, null=True)
     frequency_range = models.CharField(_("Interruption Frequency Range"), max_length=5, choices=INTERRUPTION_FREQUENCY_RANGE, blank=True, null=True)
     customer_served = models.IntegerField(_("Customer Served with Advance Meter"), blank=True, null=True)
     res_customer = models.IntegerField(_("No of Residential Customer"), blank=True, null=True)
@@ -167,6 +172,7 @@ class ProjectSpecificInfo(models.Model):
     customer_meter_perc = models.CharField(_("Customer percentage Installed Advance Meter"), max_length=7, choices=ADVANCE_METER_CUSTOMER_RANGE, blank=True, null=True)
     current_customer_meter_perc = models.CharField(_("Customer percentage Installed Advance Meter"), max_length=3, blank=True, null=True)
     customer_served_meter_perc = models.CharField(_("Customer Served by Meter in last 4yrs"), max_length=3, blank=True, null=True)
+    customer_elec_load_supplied = models.FloatField(_("Percentage of Customer Electricity Load Supplied"), blank=True, null=True)
 
     tot_local_elec_generation = models.IntegerField(_("Total Local Electricity Generation"), blank=True, null=True)
     turbine_elec = models.IntegerField(_("Local Turbine Electricity Generation"), blank=True, default=0)
@@ -571,9 +577,9 @@ class ProjectPlant(models.Model):
     """
     COAL = "coal"
     NUCLEAR = "nuclear"
-    GAS = "cas"
-    PETROLEUM = "Petroleum"
-    SIMPLE_GAS = "simple gas"
+    GAS = "gas"
+    PETROLEUM = "petroleum"
+    SIMPLE_GAS = "simple-gas"
     WIND = "wind"
     OTHER_MEAN = "other"
 
