@@ -340,18 +340,19 @@ class SEIStrategyScore(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         project = get_object_or_404(Project, pk=self.kwargs[self.lookup_url_kwargs])
         project_info = project.project_specific.get()
+        print "project_info.project_sei", project_info.project_sei
         if project_info.project_sei <= 5:
-            project_score = 50
+            sei_score = 50
         elif 5 < project_info.project_sei <= 12.5:
-            project_score = 50 - (20/3) * (float(project_info.project_sei) - 5)
+            sei_score = 50 - (20/3) * (float(project_info.project_sei) - 5)
         else:
-            project_score = 0
+            sei_score = 0
         TWOPLACES = Decimal(10) ** -2
-        project_score = Decimal(project_score).quantize(TWOPLACES)
-        project_info.sei_score = project_score
+        sei_score = Decimal(sei_score).quantize(TWOPLACES)
+        project_info.sei_score = sei_score
         project_info.save()
         response_data = {
-            "score": project_score
+            "score": sei_score
         }
         return response.Response(response_data, status=status.HTTP_200_OK)
 
@@ -411,6 +412,24 @@ class OECreditScore(generics.GenericAPIView):
         project_info.oe_credit_score = oe_credit_score
         project_info.save()
         response_data = {
-            "oe_score": oe_credit_score
+            "oe_credit_score": oe_credit_score
+        }
+        return response.Response(response_data, status=status.HTTP_200_OK)
+
+
+class ProjectScore(generics.GenericAPIView):
+    """
+    api to calculate project score
+    """
+    lookup_url_kwargs = "project_pk"
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, pk=self.kwargs[self.lookup_url_kwargs])
+        project_info = project.project_specific.get()
+        project_score = project_info.sei_score + project_info.lre_score + project_info.net_metering_score + project_info.oe_credit_score
+        project_info.project_score = project_score
+        project_info.save()
+        response_data = {
+            "project_score": project_score
         }
         return response.Response(response_data, status=status.HTTP_200_OK)
