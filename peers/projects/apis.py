@@ -310,7 +310,7 @@ class ProjectSEI(generics.GenericAPIView):
             if project_info.high_efficiency_gas_elec != 0:
                 sei_hg = national_sei[project.country]["gas"] * float(project_info.high_efficiency_gas_elec)
                 value = value + sei_hg
-            sei = (value/(project_info.tot_local_elec_generation + project_info.annual_purchased_elec)) * float(tnd)
+            sei = (value/(project_info.tot_local_elec_generation + project_info.annual_purchased_elec))
         elif project.project_specific.get().payment_option == "ppp":
             plant = ProjectPlant.objects.filter(project=project)
             thermal = plant.aggregate(Sum('thermal_energy'))
@@ -321,6 +321,7 @@ class ProjectSEI(generics.GenericAPIView):
             sei = (float(tot_energy) - float(thermal['thermal_energy__sum']))/float(project_info.tot_local_elec_generation + project_info.annual_purchased_elec)
         else:
             raise serializers.ValidationError("No Payment Option is provided for project.")
+        sei = sei * float(tnd)
         TWOPLACES = Decimal(10) ** -2
         sei = Decimal(sei).quantize(TWOPLACES)
         project_info.project_sei = sei
