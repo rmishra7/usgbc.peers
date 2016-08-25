@@ -412,6 +412,7 @@ class OECreditScore(generics.GenericAPIView):
         project_info.oe_credit_score = oe_credit_score
         project_info.save()
         response_data = {
+            "ees_value": ees,
             "oe_credit_score": oe_credit_score
         }
         return response.Response(response_data, status=status.HTTP_200_OK)
