@@ -331,7 +331,7 @@ class ProjectSEI(generics.GenericAPIView):
         return response.Response(response_data, status=status.HTTP_200_OK)
 
 
-class ProjectScore(generics.GenericAPIView):
+class SEIStrategyScore(generics.GenericAPIView):
     """
     api to calculate score of project
     """
@@ -348,7 +348,7 @@ class ProjectScore(generics.GenericAPIView):
             project_score = 0
         TWOPLACES = Decimal(10) ** -2
         project_score = Decimal(project_score).quantize(TWOPLACES)
-        project_info.project_score = project_score
+        project_info.sei_score = project_score
         project_info.save()
         response_data = {
             "score": project_score
@@ -379,5 +379,38 @@ class LREStrategyScore(generics.GenericAPIView):
         project_info.save()
         response_data = {
             'lre_score': lre_score
+        }
+        return response.Response(response_data, status=status.HTTP_200_OK)
+
+
+class OECreditScore(generics.GenericAPIView):
+    """
+    api to calculate score for operational effectiveness credit
+    """
+    lookup_url_kwargs = "project_pk"
+
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, pk=self.kwargs[self.lookup_url_kwargs])
+        project_info = project.project_specific.get()
+        bulk_sei = 10.27
+        total_energy = project_info.annual_purchased_elec + project_info.tot_local_elec_generation
+        sei = bulk_sei - project_info.project_sei
+        ees = sei * total_energy * project_info.annual_fuel_cost
+        if project.project_type == Project.CITY:
+            if ees <= 0:
+                oe_credit_score = 0
+            else:
+                oe_credit_score = 9
+        else:
+            if ees <= 0:
+                oe_credit_score = 0
+            else:
+                oe_credit_score = 5
+        project_info.bulk_sei = bulk_sei
+        project_info.ees_value = ees
+        project_info.oe_credit_score = oe_credit_score
+        project_info.save()
+        response_data = {
+            "oe_score": oe_credit_score
         }
         return response.Response(response_data, status=status.HTTP_200_OK)
