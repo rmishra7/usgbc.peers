@@ -26,9 +26,9 @@ class Project(models.Model):
         (SCREENING, "Screening")
     ]
 
-    CITY = "City"
-    CAMPUS = "Campus"
-    SUPPLY = "Supply"
+    CITY = "CITY"
+    CAMPUS = "CAMPUS"
+    SUPPLY = "SUPPLY"
 
     PROJECT_TYPE_CHOICES = [
         (CITY, "City"),
