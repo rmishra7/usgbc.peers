@@ -146,7 +146,7 @@ class ProjectSpecificInfo(models.Model):
 
     project = models.ForeignKey(Project, related_name=_("project_specific"))
     project_sei = models.FloatField(_("Project SEI value"), blank=True, null=True)
-    project_score = models.FloatField(_("Project Score"), blank=True, null=True)
+    project_score = models.FloatField(_("Project Score"), blank=True, null=True, default=0)
     sei_score = models.FloatField(_("SEI Score"), blank=True, null=True, default=0)
     lre_score = models.FloatField(_("LRE Strategy Score"), blank=True, null=True, default=0)
     net_metering_score = models.FloatField(_("Net Metering Score"), blank=True, null=True, default=0)
