@@ -408,6 +408,8 @@ class OECreditScore(generics.GenericAPIView):
                 oe_credit_score = 0
             else:
                 oe_credit_score = 5
+        TWOPLACES = Decimal(10) ** -2
+        ees = Decimal(ees).quantize(TWOPLACES)
         project_info.bulk_sei = bulk_sei
         project_info.ees_value = ees
         project_info.oe_credit_score = oe_credit_score
