@@ -196,3 +196,10 @@ class ElectricityPlantSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = ElectricityPlant
+
+
+class ProjectScoreSerializer(serializers.Serializer):
+    """
+    serializer for project score
+    """
+    score = serializers.CharField()

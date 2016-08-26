@@ -14,7 +14,7 @@ from .serializers import (
     ProjectSerializer, ProjectDetailSerializer, ProjectStrategySerializer,
     CreditsAchievedSerializer, StrategySerializer, StrategyQuestionSerializer,
     ProjectSpecificDetailSerializer, ProjectPlantSerializer, ElectricityPlantSerializer,
-    ProjectPlantDetailSerializer
+    ProjectPlantDetailSerializer, ProjectScoreSerializer
     )
 # from .tasks import project_submission_listener, project_submission_success_listener
 
@@ -426,11 +426,13 @@ class ProjectScore(generics.GenericAPIView):
     api to calculate project score
     """
     lookup_url_kwargs = "project_pk"
+    serializer_class = ProjectScoreSerializer
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
+        score = request.data['score']
         project = get_object_or_404(Project, pk=self.kwargs[self.lookup_url_kwargs])
         project_info = project.project_specific.get()
-        project_score = project_info.sei_score + project_info.lre_score + project_info.net_metering_score + project_info.oe_credit_score
+        project_score = float(project_info.project_score) + float(score)
         project_info.project_score = project_score
         project_info.save()
         response_data = {
