@@ -29,8 +29,7 @@ class Profile(AbstractBaseUser, PermissionsMixin):
     user model containing user's info
     as name/email/username/address
     """
-    first_name = models.CharField(_("First Name"), max_length=100)
-    last_name = models.CharField(_("Last Name"), max_length=100, null=True, blank=True)
+    name = models.CharField(_("Name"), max_length=100, null=True, blank=True)
     email = models.EmailField(_("Email"), max_length=70, unique=True)
     username = models.CharField(_("Profilename"), max_length=32, unique=True)
     contact_no = models.CharField(_("Contact Number"), max_length=15, validators=[
@@ -77,8 +76,8 @@ class Profile(AbstractBaseUser, PermissionsMixin):
         add username by default when saving user
         """
         if self.pk is None:
-            first_name = "_".join(str(self.first_name).split()).replace(".", "_")
-            self.username = first_name.lower() + '_' + ''.join([choice(lowercase) for i in xrange(3)])
+            name = "_".join(str(self.name).split()).replace(".", "_")
+            self.username = name.lower() + '_' + ''.join([choice(lowercase) for i in xrange(3)])
         if not self.pk and self.has_usable_password() is False:
             self.set_password(self.password)
 
@@ -86,9 +85,9 @@ class Profile(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         """
-        return user's full name i.e. first_name and last_name
+        return user's full name
         """
-        return "%s %s" % (self.first_name, self.last_name)
+        return "%s %s" % (self.name)
 
     def get_short_name(self):
-        return "%s" % (self.first_name)
+        return "%s" % (self.name)

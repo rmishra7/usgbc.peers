@@ -41,19 +41,19 @@ class AuthMixin(object):
 class RegisterSerializer(serializers.ModelSerializer, AuthMixin):
 
     """ Profile Serializer for User Signup """
-    password_confirmation = serializers.CharField(
-        max_length=40)
+    # password_confirmation = serializers.CharField(
+    #     max_length=40)
 
-    def validate(self, data, format=None):
-        """
-        password_confirmation check
-        """
-        password_confirmation = data.get('password_confirmation')
-        password = data.get('password')
-        if password_confirmation != password:
-            raise serializers.ValidationError(
-                _('Password confirmation mismatch'))
-        return data
+    # def validate(self, data, format=None):
+    #     """
+    #     password_confirmation check
+    #     """
+    #     password_confirmation = data.get('password_confirmation')
+    #     password = data.get('password')
+    #     if password_confirmation != password:
+    #         raise serializers.ValidationError(
+    #             _('Password confirmation mismatch'))
+    #     return data
 
     def validate_email(self, value):
         try:
@@ -67,7 +67,7 @@ class RegisterSerializer(serializers.ModelSerializer, AuthMixin):
         """
         Create a new User instance.
         """
-        del validated_data['password_confirmation']
+        # del validated_data['password_confirmation']
         validated_data['username'] = validated_data.get('email')
         self.instance = Profile.objects.create_user(**validated_data)
         return self.validate_user_credentials(validated_data)
@@ -75,7 +75,7 @@ class RegisterSerializer(serializers.ModelSerializer, AuthMixin):
     class Meta:
         model = Profile
         fields = (
-            'first_name', 'last_name', 'email', 'password', 'password_confirmation',
+            'name', 'email', 'password',
         )
 
 
