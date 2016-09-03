@@ -39,17 +39,12 @@ class Project(models.Model):
     INDIA = "IN"
     UNITED_STATES = "US"
 
-    COUNTRY_CHOICES = [
-        (INDIA, "India"),
-        (UNITED_STATES, "United States of America")
-    ]
-
     name = models.CharField(_("Project Name"), max_length=120)
     region = models.CharField(_("Project Region"), max_length=200, blank=True, null=True)
     description = models.TextField(_("Project Description"))
     city = models.CharField(_("City"), max_length=40)
     state = models.CharField(_("State/Province"), max_length=40)
-    country = models.CharField(_("Country"), max_length=5, choices=COUNTRY_CHOICES)
+    country = models.CharField(_("Country"), max_length=5)
     zipcode = models.CharField(_("Zipcode"), max_length=20)
     project_type = models.CharField(_("Project Type"), max_length=10, choices=PROJECT_TYPE_CHOICES, blank=True, null=True)
     # project_subtype = models.CharField(_("Project SubType"), max_length=2, choices=PROJECT_SUBTYPE_CHOICES)
