@@ -121,4 +121,4 @@ class ProfileMiniSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('id', 'first_name', 'last_name', 'email', 'role')
+        fields = ('id', 'name', 'email', 'role')

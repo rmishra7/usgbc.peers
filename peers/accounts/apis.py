@@ -184,7 +184,7 @@ class UserList(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
     queryset = model.objects.all()
     filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('first_name', 'last_name')
+    filter_fields = ('name')
 
 
 class GenerateCSRFToken(generics.GenericAPIView):
