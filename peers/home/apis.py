@@ -1,9 +1,14 @@
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
 from rest_framework import generics, response, status, serializers
+import os
+import json
+from collections import OrderedDict
 
-from .countries import countries_list
 from .states import states
+
+countriesStates_json_file = os.path.join(settings.BASE_DIR, 'home/json/countries.json')
 
 
 class CountriesApi(generics.GenericAPIView):
@@ -11,7 +16,9 @@ class CountriesApi(generics.GenericAPIView):
     return list of countries
     """
     def get(self, request, *args, **kwargs):
-        return response.Response(countries_list, status=status.HTTP_200_OK)
+        with open(countriesStates_json_file) as json_file:
+            json_data = json.load(json_file, object_pairs_hook=OrderedDict)
+        return response.Response(json_data, status=status.HTTP_200_OK)
 
 
 class StatesApi(generics.GenericAPIView):
