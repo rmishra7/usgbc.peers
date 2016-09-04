@@ -30,16 +30,16 @@ class Register(generics.CreateAPIView):
     def create(self, request, format=None):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            self.perform_create(serializer)
+            self.perform_create(request, serializer)
             response_data = {
                 'message': _('User created and Activation Email sent successfully.'),
             }
             return response.Response(response_data, status=status.HTTP_201_CREATED)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def perform_create(self, serializer):
+    def perform_create(self, request, serializer):
         serializer.save()
-        self.send_register_email(serializer.instance)
+        self.send_register_email(request, serializer.instance)
         # user_activation_listener.delay(serializer.instance.pk)
         # auth.login(self.request, serializer.instance)
 
