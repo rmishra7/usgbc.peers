@@ -43,7 +43,7 @@ class Register(generics.CreateAPIView):
         # user_activation_listener.delay(serializer.instance.pk)
         # auth.login(self.request, serializer.instance)
 
-    def send_register_email(self, user):
+    def send_register_email(self, request, user):
         sender = 'testit.roshan@gmail.com'
         sender_pass = 'initpass'
         msg = MIMEMultipart('alternative')
