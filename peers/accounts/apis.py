@@ -29,13 +29,18 @@ class Register(generics.CreateAPIView):
 
     def create(self, request, format=None):
         serializer = self.get_serializer(data=request.data)
+
+	error_data = {
+            'message': _('Something went wrong. Please try again.'),
+        }
         if serializer.is_valid():
             self.perform_create(request, serializer)
             response_data = {
                 'message': _('User created and Activation Email sent successfully.'),
             }
+
             return response.Response(response_data, status=status.HTTP_201_CREATED)
-        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return response.Response(error_data, status=status.HTTP_400_BAD_REQUEST)
 
     def perform_create(self, request, serializer):
         serializer.save()
@@ -53,7 +58,7 @@ class Register(generics.CreateAPIView):
         to = [user.email, ]
         current_site = Site.objects.get_current()
         domain = unicode(current_site.domain)
-        url = request.META.get('HTTP_REFERER').split('//')[0]  + "//" + request.META['HTTP_HOST'] + "/?username="+user.username+"&activation-token="+str(user.uuid)
+        url = "https://peer.stg.gbci.org/?username="+user.username+"&activation-token="+str(user.uuid)
         text = '<h2><a href="'+url+'">Click here</a> to activate your account.</h2>'
         html = '<html><head></head><body><h2><a href="'+url+'">Click here</a> to activate your account.</h2></body></html>'
         part1 = MIMEText(text, 'plain')
