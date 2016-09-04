@@ -188,8 +188,14 @@ class UserList(generics.ListAPIView):
     serializer_class = ProfileMiniSerializer
     permission_classes = (permissions.IsAuthenticated,)
     queryset = model.objects.all()
-    filter_backends = (filters.DjangoFilterBackend,)
-    filter_fields = ('name')
+    # filter_backends = (filters.DjangoFilterBackend,)
+    # filter_fields = ('name')
+
+    def get_queryset(self):
+        print self.queryset
+        if self.request.user.is_authenticated:
+            return self.queryset.filter(username=self.request.user.username)
+        return self.queryset
 
 
 class GenerateCSRFToken(generics.GenericAPIView):
