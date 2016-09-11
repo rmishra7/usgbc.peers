@@ -30,7 +30,7 @@ class Register(generics.CreateAPIView):
     def create(self, request, format=None):
         serializer = self.get_serializer(data=request.data)
 
-	error_data = {
+        error_data = {
             'message': _('Something went wrong. Please try again.'),
         }
         if serializer.is_valid():
@@ -44,36 +44,52 @@ class Register(generics.CreateAPIView):
 
     def perform_create(self, request, serializer):
         serializer.save()
-        self.send_register_email(request, serializer.instance)
+        self.send_register_email(serializer.instance)
         # user_activation_listener.delay(serializer.instance.pk)
         # auth.login(self.request, serializer.instance)
 
-    def send_register_email(self, request, user):
-        sender = 'testit.roshan@gmail.com'
-        sender_pass = 'initpass'
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = "User Account Email"
-        msg['From'] = sender
-        msg['To'] = user.email
-        to = [user.email, ]
-        current_site = Site.objects.get_current()
-        domain = unicode(current_site.domain)
+    # def send_register_email(self, request, user):
+    #     sender = 'testit.roshan@gmail.com'
+    #     sender_pass = 'initpass'
+    #     msg = MIMEMultipart('alternative')
+    #     msg['Subject'] = "User Account Email"
+    #     msg['From'] = sender
+    #     msg['To'] = user.email
+    #     to = [user.email, ]
+    #     current_site = Site.objects.get_current()
+    #     domain = unicode(current_site.domain)
+    #     url = "https://peer.stg.gbci.org/?username="+user.username+"&activation-token="+str(user.uuid)
+    #     text = '<h2><a href="'+url+'">Click here</a> to activate your account.</h2>'
+    #     html = '<html><head></head><body><h2><a href="'+url+'">Click here</a> to activate your account.</h2></body></html>'
+    #     part1 = MIMEText(text, 'plain')
+    #     part2 = MIMEText(html, 'html')
+    #     msg.attach(part1)
+    #     msg.attach(part2)
+    #     try:
+    #         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    #         server.ehlo()
+    #         server.login(sender, sender_pass)
+    #         server.sendmail(sender, to, msg.as_string())
+    #         server.close()
+    #         print 'Email sent!'
+    #     except:
+    #         print 'Something went wrong...'
+
+    def send_register_email(self, user):
+        import sendgrid
+        from sendgrid.helpers.mail import *
+
+        sg = sendgrid.SendGridAPIClient(apikey="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")
+        from_email = Email("roshanmishra@live.com")
+        subject = "User Account Email"
+        to_email = Email(user.email)
         url = "https://peer.stg.gbci.org/?username="+user.username+"&activation-token="+str(user.uuid)
-        text = '<h2><a href="'+url+'">Click here</a> to activate your account.</h2>'
+        # text = '<h2><a href="'+url+'">Click here</a> to activate your account.</h2>'
         html = '<html><head></head><body><h2><a href="'+url+'">Click here</a> to activate your account.</h2></body></html>'
-        part1 = MIMEText(text, 'plain')
-        part2 = MIMEText(html, 'html')
-        msg.attach(part1)
-        msg.attach(part2)
-        try:
-            server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-            server.ehlo()
-            server.login(sender, sender_pass)
-            server.sendmail(sender, to, msg.as_string())
-            server.close()
-            print 'Email sent!'
-        except:
-            print 'Something went wrong...'
+
+        content = Content("text/html", html)
+        mail = Mail(from_email, subject, to_email, content)
+        sg.client.mail.send.post(request_body=mail.get())
 
 
 class ActionViewMixin(object):

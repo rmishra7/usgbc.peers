@@ -5,3 +5,4 @@ django-celery
 redis
 django-braces
 mysql-python
+sendgrid
