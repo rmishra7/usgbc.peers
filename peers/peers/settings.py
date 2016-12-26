@@ -28,7 +28,7 @@ SECRET_KEY = 'zo&+y&#5=)!v)2lnauvd@&qd*5e2(yqkgz5%0bp(_2b7!&16+j'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["api-peer.stg.gbci.org", "localhost"]
 
 ADMINS = ['testit.roshan@gmail.com', ]
 
