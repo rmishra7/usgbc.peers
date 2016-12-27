@@ -3,13 +3,12 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import auth
 from django.middleware.csrf import get_token
 from django.shortcuts import get_object_or_404
-from django.contrib.sites.models import Site
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from django.template import Context
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
 
 import uuid
-import smtplib
-from rest_framework import generics, response, status, permissions, exceptions, filters
+from rest_framework import generics, response, status, permissions, exceptions
 from rest_framework.authtoken.models import Token
 
 from .permissions import IsNotAuthenticated
@@ -17,7 +16,6 @@ from .models import Profile
 from .serializers import (
     RegisterSerializer, LoginSerializer, LogOutSerializer, ProfileMiniSerializer,
     TokenSerializer, )
-# from .tasks import user_activation_listener
 
 
 class Register(generics.CreateAPIView):
@@ -45,51 +43,17 @@ class Register(generics.CreateAPIView):
     def perform_create(self, request, serializer):
         serializer.save()
         self.send_register_email(serializer.instance)
-        # user_activation_listener.delay(serializer.instance.pk)
-        # auth.login(self.request, serializer.instance)
-
-    # def send_register_email(self, request, user):
-    #     sender = 'testit.roshan@gmail.com'
-    #     sender_pass = 'initpass'
-    #     msg = MIMEMultipart('alternative')
-    #     msg['Subject'] = "User Account Email"
-    #     msg['From'] = sender
-    #     msg['To'] = user.email
-    #     to = [user.email, ]
-    #     current_site = Site.objects.get_current()
-    #     domain = unicode(current_site.domain)
-    #     url = "https://peer.stg.gbci.org/?username="+user.username+"&activation-token="+str(user.uuid)
-    #     text = '<h2><a href="'+url+'">Click here</a> to activate your account.</h2>'
-    #     html = '<html><head></head><body><h2><a href="'+url+'">Click here</a> to activate your account.</h2></body></html>'
-    #     part1 = MIMEText(text, 'plain')
-    #     part2 = MIMEText(html, 'html')
-    #     msg.attach(part1)
-    #     msg.attach(part2)
-    #     try:
-    #         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-    #         server.ehlo()
-    #         server.login(sender, sender_pass)
-    #         server.sendmail(sender, to, msg.as_string())
-    #         server.close()
-    #         print 'Email sent!'
-    #     except:
-    #         print 'Something went wrong...'
 
     def send_register_email(self, user):
-        import sendgrid
-        from sendgrid.helpers.mail import *
-
-        sg = sendgrid.SendGridAPIClient(apikey="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")
-        from_email = Email("roshanmishra@live.com")
-        subject = "User Account Email"
-        to_email = Email(user.email)
-        url = "https://peer.stg.gbci.org/?username="+user.username+"&activation-token="+str(user.uuid)
-        # text = '<h2><a href="'+url+'">Click here</a> to activate your account.</h2>'
-        html = '<html><head></head><body><h2><a href="'+url+'">Click here</a> to activate your account.</h2></body></html>'
-
-        content = Content("text/html", html)
-        mail = Mail(from_email, subject, to_email, content)
-        sg.client.mail.send.post(request_body=mail.get())
+        subject = "Account Activation Link"
+        url = url = "https://peer.stg.gbci.org/?username="+user.username+"&activation-token="+str(user.uuid)
+        context = {
+            "url": url,
+        }
+        message = get_template("mail/acc_activation.html").render(Context(context))
+        msg = EmailMessage(subject, message, to=[user.email, ], from_email="testit.roshan@gmail.com")
+        msg.content_subtype = 'html'
+        msg.send()
 
 
 class ActionViewMixin(object):
@@ -136,26 +100,6 @@ class Login(ActionViewMixin, generics.GenericAPIView):
             data=TokenSerializer(token).data,
             status=status.HTTP_200_OK,
         )
-# class Login(generics.GenericAPIView):
-
-#     """
-#     Signin using your email address and password
-#     """
-#     serializer_class = LoginSerializer
-#     permission_classes = (IsNotAuthenticated, )
-
-#     def post(self, request, format=None):
-#         """
-#         Authenticate User againest credentials & return Authorization token
-#         """
-#         serializer = self.get_serializer(data=request.data)
-#         if serializer.is_valid():
-#             auth.login(request, serializer.instance)
-#             response_data = {
-#                 'message': _('Logged in successfully'),
-#             }
-#             return response.Response(response_data, status=status.HTTP_200_OK)
-#         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LogOut(generics.GenericAPIView):
@@ -179,17 +123,16 @@ class UserActivation(generics.GenericAPIView):
     """
     model = Profile
     permission_classes = (IsNotAuthenticated, )
-    lookup_url_kwargs = "username"
+    lookup_url_kwarg = "username"
     lookup_field = "activation_key"
 
     def get(self, request, *args, **kwargs):
-        instance = get_object_or_404(self.model, username=self.kwargs[self.lookup_url_kwargs])
+        print self.lookup_url_kwarg
+        instance = get_object_or_404(self.model, username=self.kwargs[self.lookup_url_kwarg])
         if instance.uuid != uuid.UUID(self.kwargs[self.lookup_field]):
             raise exceptions.ParseError(_("Invalid Activation Token."))
         instance.account_activated = True
         instance.save()
-        # instance.backend = settings.AUTHENTICATION_BACKENDS[0]
-        # auth.login(self.request, instance)
         response_data = {
             'message': _('Account Activated Successfully.'),
         }
@@ -204,8 +147,6 @@ class UserList(generics.ListAPIView):
     serializer_class = ProfileMiniSerializer
     permission_classes = (permissions.IsAuthenticated,)
     queryset = model.objects.all()
-    # filter_backends = (filters.DjangoFilterBackend,)
-    # filter_fields = ('name')
 
     def get_queryset(self):
         print self.queryset
