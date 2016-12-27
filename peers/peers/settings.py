@@ -181,15 +181,9 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
-CELERY_SEND_TASK_ERROR_EMAILS = True
+LOGIN_REDIRECT_URL = "/"
 
-BROKER_URL = 'redis://localhost:6379/0'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
-
-djcelery.setup_loader()
+SENDSMS_BACKEND = 'sendsms.backends.console.SmsBackend'
 
 DEFAULT_FROM_EMAIL = 'testit.roshan@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
