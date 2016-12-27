@@ -16,6 +16,7 @@ class ProjectMiniSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Project
+	fields = '__all__'
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -108,6 +109,7 @@ class ProjectSpecificDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProjectSpecificInfo
+	fields = '__all__'
 
 
 class CreditsAchievedSerializer(serializers.ModelSerializer):
@@ -116,6 +118,7 @@ class CreditsAchievedSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = CreditsAchieved
+	fields = '__all__'
 
 
 class StrategySerializer(serializers.ModelSerializer):
@@ -124,6 +127,7 @@ class StrategySerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Strategy
+	fields = '__all__'
 
 
 class StrategyQuestionSerializer(serializers.ModelSerializer):
@@ -132,6 +136,7 @@ class StrategyQuestionSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = StrategyQuestion
+	fields = '__all__'
 
 
 class ProjectStrategySerializer(serializers.ModelSerializer):
@@ -153,6 +158,7 @@ class ProjectStrategySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProjectStrategy
+	fields = '__all__'
         read_only_fields = ('project', 'strategy', 'submitted_by')
 
 
@@ -196,6 +202,7 @@ class ElectricityPlantSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = ElectricityPlant
+	fields = '__all__'
 
 
 class ProjectScoreSerializer(serializers.Serializer):

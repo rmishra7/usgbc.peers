@@ -21,7 +21,7 @@ from django.views.generic import base
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^docs/', include('rest_framework_docs.urls')),
+    url(r'^', include('rest_framework_docs.urls')),
     url(r'^auth/', include('accounts.urls')),
     url(r'^projects/', include('projects.urls')),
     # url(r'^', base.RedirectView.as_view(url="/docs/")),
